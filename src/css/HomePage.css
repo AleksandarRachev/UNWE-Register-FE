@@ -1,0 +1,23 @@
+h2 {
+    padding: 0 0 0 5%;
+}
+
+.card {
+    background-color: rgba(199, 199, 199, 0.719);
+    margin: 3%;
+    padding: 1% 2% 1% 2%;
+}
+
+.card-content {
+    display: flex;
+}
+
+.fakeimg {
+    width: 40%;
+    padding: 0 0 0 5%;
+    height: 100%;
+}
+
+.header {
+    padding: 5% 0 0 0;
+}
