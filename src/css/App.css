@@ -1,5 +1,9 @@
 body {
-  background-color: #afadad;
+  background-color: #fff;
+}
+
+.logo {
+  height: 50px;
 }
 
 ul {
@@ -28,6 +32,11 @@ li a:hover, .dropdown:hover .dropbtn {
 
 li.dropdown {
   display: inline-block;
+}
+
+.navbar {
+  position: fixed;
+  width: 100%;
 }
 
 .dropdown-content {

@@ -1,13 +1,23 @@
 import React from 'react';
 import '../css/App.css';
+import HomePage from '../pages/HomePage'
+import AgreementsPage from '../pages/AgreementsPage'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 
 class App extends React.Component {
   render() {
     return (
       <body>
+        <div className="navbar">
         <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#news">News</a></li>
+          <li><img className="logo" src="unwe-logo3.png"/></li>
+          <li><a href="/home">Home</a></li>
+          <li><a href="/agreements">Agreements</a></li>
           <li className="dropdown">
             <a href="#" className="dropbtn">Dropdown</a>
             <div className="dropdown-content">
@@ -24,6 +34,20 @@ class App extends React.Component {
             </div>
           </li>
         </ul>
+        </div>
+        <Router>
+          <Switch>
+            <Route path="/home"><HomePage /></Route>
+            <Route path="/agreements"><AgreementsPage /></Route>
+            {/* <Route path="/login"><LoginPage /></Route>
+            <Route path="/register"><RegisterPage /></Route>
+            <Route path="/category"><AddCategoryPage /></Route>
+            <Route path="/post**"><PostPage /></Route>
+            <Route path="/profile" ><Profile /></Route>
+            <Route path="/user-posts" ><UserPosts /></Route> */}
+            <Redirect from="/" to="/home"></Redirect>
+          </Switch>
+        </Router>
       </body>
     );
   }
