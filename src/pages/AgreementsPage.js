@@ -3,6 +3,11 @@ import '../css/AgreementPage.css'
 
 class AgreementsPage extends React.Component {
     items = [1, 2, 3, 4]
+
+    componentDidMount() {
+        document.title = "UNWE: Agreements";
+    }
+
     render() {
         return (
             <div>
