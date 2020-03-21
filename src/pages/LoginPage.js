@@ -13,7 +13,7 @@ class LoginPage extends React.Component {
         password: null
     }
 
-    componentDidMount () {
+    componentDidMount() {
         document.title = "Login";
     }
 
@@ -32,7 +32,7 @@ class LoginPage extends React.Component {
         }).then(response => {
             localStorage.setItem("token", response.data.token)
             localStorage.setItem("user", JSON.stringify(response.data.userResponse))
-            window.location.href = "/home"
+            window.location.reload();
         },
             error => {
                 this.setState({ ...this.state, error: null })
@@ -56,7 +56,7 @@ class LoginPage extends React.Component {
                         <input type="password" placeholder="Password" className="input" onChange={event => this.setPassword(event.target.value)} />
                     </div>
                     <div className="link-div">
-                        <button className="submit-button" type="submit" onClick={this.loginUser.bind(this)}>Login</button>
+                        <button className="submit-button" type="submit"><Link to="home" onClick={this.loginUser.bind(this)}>Login</Link></button>
                         <button className="submit-button"><Link to="/register">Register</Link></button>
                     </div>
                 </form>

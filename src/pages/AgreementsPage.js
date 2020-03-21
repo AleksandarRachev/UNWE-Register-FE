@@ -11,13 +11,13 @@ class AgreementsPage extends React.Component {
     render() {
         return (
             <div>
-                <div class="header">
+                <div className="header">
                     <h2>Agreements</h2>
                 </div>
-                {this.items.map((value, index) => {
-                    return <div class="row">
-                        <div class="leftcolumn">
-                            <div class="card">
+                {this.items.map((item, i) => {
+                    return <div key={i} className="row">
+                        <div className="leftcolumn">
+                            <div className="card">
                                 <h3>TITLE HEADING</h3>
                                 <p>Made on</p>
                                 <div className="card-content">
