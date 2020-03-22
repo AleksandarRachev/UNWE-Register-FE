@@ -4,6 +4,7 @@ import HomePage from '../pages/HomePage';
 import AgreementsPage from '../pages/AgreementsPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
+import ProfilePage from '../pages/ProfilePage';
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,7 +18,7 @@ class App extends React.Component {
 
   logout = () => {
     localStorage.clear();
-    window.location.reload();
+    window.location.href = "/home";
   }
 
   renderProfile = () => {
@@ -31,7 +32,7 @@ class App extends React.Component {
         <li key="profile" className="dropdown profile">
           <Link to="#" className="dropbtn">Profile</Link>
           <div className="dropdown-content">
-            <Link to="/home" onClick={this.scrollToTop.bind(this)}>Profile</Link>
+            <Link to="/profile" onClick={this.scrollToTop.bind(this)}>Profile</Link>
             <Link to="/home" onClick={this.logout.bind(this)}>Logout</Link>
           </div>
         </li>);
@@ -66,6 +67,7 @@ class App extends React.Component {
           <Route path="/agreements"><AgreementsPage /></Route>
           <Route path="/login"><LoginPage /></Route>
           <Route path="/register"><RegisterPage /></Route>
+          <Route path="/profile"><ProfilePage /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>

@@ -1,0 +1,51 @@
+h3{
+  margin-left: 15px;
+}
+
+.fileInput {
+  border: 1px solid black;
+  margin: 0 15px;
+  cursor: pointer;
+}
+  
+.imgPreview {
+    text-align: center;
+    margin: 5px 15px;
+    border: 2px solid gray;
+    width: 200px;
+    height: 100%;
+}
+
+.profile-pic{
+    width: 200px;
+    height: 100%;
+}
+  
+.previewText{
+  width: 100%;
+  margin-top: 20px;
+}
+  
+.submitButton {
+  padding: 12px;
+  margin-left: 10px;
+  background: white;
+  border: 4px solid lightgray;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 10pt;
+  cursor: pointer;
+}
+
+.submitButton:hover {
+    background-color: #efefef;
+}
+
+.centerText{
+  text-align: center;
+  width: 500px;
+}
+
+.profile-edit {
+    display: inline-grid;
+}

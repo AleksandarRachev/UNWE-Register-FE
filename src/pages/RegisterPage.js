@@ -97,7 +97,7 @@ class RegisterPage extends React.Component {
                 emailError: emailError,
                 phoneError: phoneError,
                 passwordError: passwordError,
-                repeatPasswordError, repeatPasswordError,
+                repeatPasswordError: repeatPasswordError,
                 firstNameError: firstNameError,
                 lastNameError: lastNameError
             })
