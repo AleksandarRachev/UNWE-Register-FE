@@ -27,6 +27,10 @@ class ProfilePage extends React.Component {
 
     state = initialState;
 
+    componentDidMount() {
+        document.title = "Profile: " + this.state.firstName + "  " + this.state.lastName;
+    }
+
     submitPersonalInfoEdit = (e) => {
         e.preventDefault();
 
