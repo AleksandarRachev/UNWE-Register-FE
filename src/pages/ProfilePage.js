@@ -3,9 +3,7 @@ import Error from '../Error/Error';
 import '../css/ProfilePage.css';
 import GlobalVariables from '../globalVariables';
 import axios from 'axios';
-import {
-    Link
-} from "react-router-dom";
+import EditPassword from '../components/EditPassword';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
@@ -13,21 +11,23 @@ const headers = {
 
 const user = JSON.parse(localStorage.getItem("user"));
 
+const initialState = {
+    data: null,
+    file: null,
+    imagePreviewUrl: user === null ? null : user.imageUrl,
+    email: user === null ? null : user.email,
+    firstName: user === null ? null : user.firstName,
+    lastName: user === null ? null : user.lastName,
+    phone: user === null ? null : user.phone,
+    address: user === null ? null : user.address,
+    contactPerson: user === null ? null : user.contactPerson
+}
+
 class ProfilePage extends React.Component {
 
-    state = {
-        data: null,
-        file: null,
-        imagePreviewUrl: user.imageUrl,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phone: user.phone,
-        address: user.address,
-        contactPerson: user.contactPerson
-    }
+    state = initialState;
 
-    handleSubmit = (e) => {
+    submitPersonalInfoEdit = (e) => {
         e.preventDefault();
 
         const data = this.state.data == null ? new FormData() : this.state.data;
@@ -52,6 +52,10 @@ class ProfilePage extends React.Component {
             },
                 error => {
                     this.setState({ ...this.state, error: null })
+                    if (error.response.status === 403) {
+                        localStorage.clear();
+                        window.location.href = "/home";
+                    }
                     if (error.response.data.message != null) {
                         this.setState({ ...this.state, error: "There was an error: " + error.response.data.message })
                     }
@@ -120,11 +124,11 @@ class ProfilePage extends React.Component {
         }
 
         return (
-            <div className="header">
+            <div className="header-profile">
+                {this.state.error && <Error message={this.state.error} />}
                 <div className="edit-form">
-                    {this.state.error && <Error message={this.state.error} />}
                     <div className="img-preview">{imagePreview}</div>
-                    <form className="profile-edit" onSubmit={(e) => this.handleSubmit(e)}>
+                    <form className="profile-edit" onSubmit={(e) => this.submitPersonalInfoEdit(e)}>
                         <input className="file-input" type="file" onChange={e => this.handleImageChange(e)} />
                         <input className="field-input" value={this.state.email} placeholder="* Email" onChange={e => this.handleEmailChange(e)} />
                         <input className="field-input" value={this.state.firstName} placeholder="* First name" onChange={e => this.handleFirstNameChange(e)} />
@@ -132,12 +136,13 @@ class ProfilePage extends React.Component {
                         <input className="field-input" value={this.state.phone} placeholder="* Phone" onChange={e => this.handlePhoneChange(e)} />
                         <input className="field-input" value={this.state.address} placeholder="Address" onChange={e => this.handleAddressChange(e)} />
                         <input className="field-input" value={this.state.contactPerson} placeholder="Contact person" onChange={e => this.handleContactPersonChange(e)} />
-                        <button className="submit-edit-button" type="submit" onClick={e => this.handleSubmit(e)}>Edit profle</button>
+                        <button className="submit-edit-button" type="submit" onClick={e => this.submitPersonalInfoEdit(e)}>Edit profle</button>
                     </form>
                 </div>
+                <div className="space"></div>
+                <EditPassword />
             </div>
         )
     }
-
 }
 export default ProfilePage;

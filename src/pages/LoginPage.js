@@ -10,7 +10,9 @@ import {
 class LoginPage extends React.Component {
     state = {
         email: null,
-        password: null
+        password: null,
+        emailError: null,
+        passwordError: null,
     }
 
     componentDidMount() {
@@ -26,23 +28,46 @@ class LoginPage extends React.Component {
     }
 
     loginUser = () => {
-        axios.post(GlobalVariables.backendUrl + '/users/login', {
-            email: this.state.email,
-            password: this.state.password
-        }).then(response => {
-            localStorage.setItem("token", response.data.token)
-            localStorage.setItem("user", JSON.stringify(response.data.userResponse))
-            window.location.reload();
-        },
-            error => {
-                this.setState({ ...this.state, error: null })
-                if (error.response.data.message != null) {
-                    this.setState({ ...this.state, error: "There was an error: " + error.response.data.message })
-                }
-                else {
-                    this.setState({ ...this.state, error: "Oops there was a problem." })
-                }
-            });
+        if (this.isValid()) {
+            axios.post(GlobalVariables.backendUrl + '/users/login', {
+                email: this.state.email,
+                password: this.state.password
+            }).then(response => {
+                localStorage.setItem("token", response.data.token)
+                localStorage.setItem("user", JSON.stringify(response.data.userResponse))
+                window.location.href = "/home";
+            },
+                error => {
+                    this.setState({ ...this.state, error: null })
+                    if (error.response.data.message != null) {
+                        this.setState({ ...this.state, error: "There was an error: " + error.response.data.message })
+                    }
+                    else {
+                        this.setState({ ...this.state, error: "Oops there was a problem." })
+                    }
+                });
+        }
+    }
+
+    isValid = () => {
+        let emailError = "";
+        let passwordError = "";
+
+        if (this.state.email === null) {
+            emailError = "Email missing"
+        }
+        if (this.state.password === null) {
+            passwordError = "Password required";
+        }
+
+        if (emailError || passwordError) {
+            this.setState({
+                emailError: emailError,
+                passwordError: passwordError
+            })
+            return false
+        }
+        return true;
     }
 
     render() {
@@ -53,10 +78,12 @@ class LoginPage extends React.Component {
                     <h2 className="form-title">Login</h2>
                     <div className="form-fields">
                         <input className="input" placeholder="Email" onChange={event => this.setEmail(event.target.value)} /><br />
+                        <div className="input-error">{this.state.emailError}</div>
                         <input type="password" placeholder="Password" className="input" onChange={event => this.setPassword(event.target.value)} />
+                        <div className="input-error">{this.state.passwordError}</div>
                     </div>
                     <div className="link-div">
-                        <button className="submit-button" type="submit"><Link to="home" onClick={this.loginUser.bind(this)}>Login</Link></button>
+                        <button className="submit-button" type="submit" onClick={this.loginUser.bind(this)}>Login</button>
                         <button className="submit-button"><Link to="/register">Register</Link></button>
                     </div>
                 </form>
