@@ -122,7 +122,7 @@ class ProfilePage extends React.Component {
     render() {
         let imagePreview = this.state.imagePreviewUrl;
         if (this.state.imagePreviewUrl) {
-            imagePreview = (<img className="profile-pic" src={this.state.imagePreviewUrl} />);
+            imagePreview = (<img alt="profile" className="profile-pic" src={this.state.imagePreviewUrl} />);
         } else {
             imagePreview = (<div className="preview-text">No profile picture</div>);
         }

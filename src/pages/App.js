@@ -5,6 +5,7 @@ import AgreementsPage from '../pages/AgreementsPage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ProfilePage from '../pages/ProfilePage';
+import AddAgreementPage from '../pages/AddAgreementPage';
 import {
   BrowserRouter as Router,
   Switch,
@@ -54,9 +55,9 @@ class App extends React.Component {
             <li key="dropdown" className="dropdown">
               <Link to="#" className="dropbtn">Dropdown</Link>
               <div className="dropdown-content">
-                <Link to="/home">Link 1</Link>
-                <Link to="/home">Link 2</Link>
-                <Link to="/home">Link 3</Link>
+                <Link to="/add-agreement">Add agreement</Link>
+                <Link to="/home">Add activity plan</Link>
+                <Link to="/home">Add event</Link>
               </div>
             </li>
             {this.renderProfile()}
@@ -68,6 +69,7 @@ class App extends React.Component {
           <Route path="/login"><LoginPage /></Route>
           <Route path="/register"><RegisterPage /></Route>
           <Route path="/profile"><ProfilePage /></Route>
+          <Route path="/add-agreement"><AddAgreementPage /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>
