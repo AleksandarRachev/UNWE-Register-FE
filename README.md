@@ -70,4 +70,4 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### installed
 
-material-ui, axios
+material-ui, axios, react-infinite-scroll-component

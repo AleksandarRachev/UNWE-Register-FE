@@ -119,7 +119,7 @@ class RegisterPage extends React.Component {
             }).then(response => {
                 localStorage.setItem("token", response.data.token)
                 localStorage.setItem("user", JSON.stringify(response.data.userResponse))
-                window.location.reload();
+                window.location.href = "/home";
             },
                 error => {
                     this.setState({ ...this.state, error: null })

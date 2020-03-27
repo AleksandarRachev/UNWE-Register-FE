@@ -6,6 +6,7 @@ import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import ProfilePage from '../pages/ProfilePage';
 import AddAgreementPage from '../pages/AddAgreementPage';
+import AgreementPage from '../pages/AgreementPage';
 import {
   BrowserRouter as Router,
   Switch,
@@ -70,6 +71,7 @@ class App extends React.Component {
           <Route path="/register"><RegisterPage /></Route>
           <Route path="/profile"><ProfilePage /></Route>
           <Route path="/add-agreement"><AddAgreementPage /></Route>
+          <Route path="/agreement/**"><AgreementPage /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>

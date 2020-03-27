@@ -58,7 +58,7 @@ class ProfilePage extends React.Component {
                     this.setState({ ...this.state, error: null })
                     if (error.response.status === 403) {
                         localStorage.clear();
-                        window.location.href = "/home";
+                        window.location.href = "/login";
                     }
                     if (error.response.data.message != null) {
                         this.setState({ ...this.state, error: "There was an error: " + error.response.data.message })
