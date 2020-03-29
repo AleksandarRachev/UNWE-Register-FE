@@ -1,11 +1,15 @@
 import React from 'react';
-import '../css/AgreementPage.css';
+import '../css/AgreementsPage.css';
 import GlobalVariables from '../globalVariables';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
     Link
 } from "react-router-dom";
+
+const headers = {
+    'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
+}
 
 class AgreementsPage extends React.Component {
     items = [1, 2, 3, 4]
@@ -22,7 +26,7 @@ class AgreementsPage extends React.Component {
     }
 
     fetchMoreData = () => {
-        axios.get(GlobalVariables.backendUrl + "/agreements?page=" + this.state.page, {})
+        axios.get(GlobalVariables.backendUrl + "/agreements?page=" + this.state.page, { headers: headers })
             .then(response => {
                 this.setState({ ...this.state, agreements: this.state.agreements.concat(response.data.agreements) })
             },
@@ -57,7 +61,8 @@ class AgreementsPage extends React.Component {
                         return <div key={i} className="row">
                             <div className="leftcolumn">
                                 <div className="card">
-                                    <h3><Link to={"/agreement/" + item.uid}>{item.title}</Link></h3>
+                                    <Link to={"/agreement/" + item.uid}><img className="edit-button" src="pencil-edit-button.png"/></Link>
+                                    <h3>{item.title}</h3>
                                     <p>Made on: {this.convertMilisecToDate(item.date)}</p>
                                     <div className="card-content">
                                         <p>{item.description}</p>
