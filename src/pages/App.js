@@ -7,6 +7,8 @@ import RegisterPage from '../pages/RegisterPage';
 import ProfilePage from '../pages/ProfilePage';
 import AddAgreementPage from '../pages/AddAgreementPage';
 import AgreementPage from '../pages/AgreementPage';
+import axios from 'axios';
+import GlobalVariables from '../globalVariables';
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,12 +17,34 @@ import {
   Link
 } from "react-router-dom";
 
+const user = JSON.parse(localStorage.getItem("user"));
+
+const headers = {
+  'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
+}
 
 class App extends React.Component {
+
+  componentDidMount() {
+    this.checkUserToken();
+  }
 
   logout = () => {
     localStorage.clear();
     window.location.href = "/home";
+  }
+
+  checkUserToken = () => {
+    axios.post(GlobalVariables.backendUrl + "/users/checkLogged", {}, { headers: headers })
+      .then(
+        response => { },
+        error => {
+          if (error.response.status === 403) {
+            localStorage.clear();
+            this.setState({})
+          }
+        }
+      );
   }
 
   renderProfile = () => {
@@ -41,8 +65,33 @@ class App extends React.Component {
     }
   }
 
+  renderAgreementsLink = () => {
+    if (user.role === "COORDINATOR") {
+      return <li key="agreements"><Link to="/agreements" onClick={this.scrollToTop.bind(this)}>Agreements</Link></li>;
+    }
+  }
+
+  renderIfLogged = () => {
+    if (localStorage.getItem("token") != null) {
+      return (
+        <div>
+          {this.renderAgreementsLink()}
+          <li key="dropdown" className="dropdown">
+            <Link to="#" className="dropbtn">Other</Link>
+            <div className="dropdown-content">
+              <Link to="/add-agreement">Add agreement</Link>
+              <Link to="/home">Add activity plan</Link>
+              <Link to="/home">Add event</Link>
+            </div>
+          </li>
+        </div>
+      );
+    }
+  }
+
   scrollToTop = () => {
     window.scrollTo(0, 0);
+    this.checkUserToken();
   }
 
   render() {
@@ -52,15 +101,7 @@ class App extends React.Component {
           <ul>
             <li key="image"><img alt="logo" className="logo" src="unwe-logo3.png" /></li>
             <li key="home"><Link to="/home" onClick={this.scrollToTop.bind(this)}>Home</Link></li>
-            <li key="agreements"><Link to="/agreements" onClick={this.scrollToTop.bind(this)}>Agreements</Link></li>
-            <li key="dropdown" className="dropdown">
-              <Link to="#" className="dropbtn">Dropdown</Link>
-              <div className="dropdown-content">
-                <Link to="/add-agreement">Add agreement</Link>
-                <Link to="/home">Add activity plan</Link>
-                <Link to="/home">Add event</Link>
-              </div>
-            </li>
+            {this.renderIfLogged()}
             {this.renderProfile()}
           </ul>
         </div>

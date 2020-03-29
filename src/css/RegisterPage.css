@@ -3,3 +3,26 @@
     color: red;
     padding: 0 0 0 7%;
 }
+
+.department-select {
+    padding: 2% 12% 2% 1%;
+    margin: 2% 0 0 5%;
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 90%;
+}
+
+.switch-button {
+    padding: 8px 8px;
+    margin: 5px 45px 0 0;
+    background: white;
+    border: 2px solid lightgray;
+    color: black;
+    border-radius: 10px;
+    font-size: 9pt;
+    cursor: pointer;
+}
+
+.switch-button:hover {
+  background-color: #efefef;
+}

@@ -4,7 +4,7 @@ import GlobalVariables from '../globalVariables';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
-  Link
+    Link
 } from "react-router-dom";
 
 class AgreementsPage extends React.Component {
@@ -23,7 +23,15 @@ class AgreementsPage extends React.Component {
 
     fetchMoreData = () => {
         axios.get(GlobalVariables.backendUrl + "/agreements?page=" + this.state.page, {})
-            .then(response => this.setState({ ...this.state, agreements: this.state.agreements.concat(response.data.agreements) }));
+            .then(response => {
+                this.setState({ ...this.state, agreements: this.state.agreements.concat(response.data.agreements) })
+            },
+                error => {
+                    if (error.response.status === 403) {
+                        window.location.href = "/home";
+                    }
+                }
+            );
         this.setState({ ...this.state, page: this.state.page + 1 });
     };
 
