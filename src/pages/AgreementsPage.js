@@ -12,7 +12,6 @@ const headers = {
 }
 
 class AgreementsPage extends React.Component {
-    items = [1, 2, 3, 4]
 
     state = {
         agreements: [],
@@ -44,13 +43,23 @@ class AgreementsPage extends React.Component {
         return date.toLocaleDateString()
     }
 
+    deleteAgreement = (agreementId) => {
+        let deleteAgreement = window.confirm("Are you sure you want to delete");
+        if (deleteAgreement) {
+            axios.delete(GlobalVariables.backendUrl + "/agreements/" + agreementId, { headers: headers })
+                .then(response => {
+                    alert(response.data);
+                    window.location.reload();
+                })
+        }
+    }
+
     render() {
         return (
             <div>
                 <div className="header">
                     <h2>Agreements</h2>
                 </div>
-
                 <InfiniteScroll
                     dataLength={this.state.agreements.length}
                     next={this.fetchMoreData}
@@ -61,7 +70,10 @@ class AgreementsPage extends React.Component {
                         return <div key={i} className="row">
                             <div className="leftcolumn">
                                 <div className="card">
-                                    <Link to={"/agreement/" + item.uid}><img className="edit-button" src="pencil-edit-button.png"/></Link>
+                                    <div className="edit-images">
+                                        <Link to="#" onClick={() => this.deleteAgreement(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
+                                        <Link to={"/agreement/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
+                                    </div>
                                     <h3>{item.title}</h3>
                                     <p>Made on: {this.convertMilisecToDate(item.date)}</p>
                                     <div className="card-content">
