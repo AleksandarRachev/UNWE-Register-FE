@@ -1,7 +1,7 @@
 import React from 'react';
-import Error from '../Error/Error';
-import '../css/AddAgreementPage.css';
-import GlobalVariables from '../globalVariables';
+import Error from '../../Error/Error';
+import '../../css/AddAgreementPage.css';
+import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
 
 const headers = {
@@ -47,7 +47,6 @@ class AddAgreementPage extends React.Component {
             },
                 error => {
                     this.setState({ ...this.state, error: null })
-                    console.log(error)
                     if (error.response.status === 403) {
                         localStorage.clear();
                         window.location.href = "/login";

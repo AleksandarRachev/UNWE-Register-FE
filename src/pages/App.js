@@ -1,12 +1,14 @@
 import React from 'react';
 import '../css/App.css';
-import HomePage from '../pages/HomePage';
-import AgreementsPage from '../pages/AgreementsPage';
-import LoginPage from '../pages/LoginPage';
-import RegisterPage from '../pages/RegisterPage';
-import ProfilePage from '../pages/ProfilePage';
-import AddAgreementPage from '../pages/AddAgreementPage';
-import AgreementPage from '../pages/AgreementPage';
+import HomePage from './HomePage';
+import AgreementsPage from './agreements/AgreementsPage';
+import LoginPage from './LoginPage';
+import RegisterPage from './RegisterPage';
+import ProfilePage from './ProfilePage';
+import AddAgreementPage from './agreements/AddAgreementPage';
+import AgreementPage from './agreements/AgreementPage';
+import AddActivityPlanPage from './activityPlans/AddActivityPlanPage';
+import ActivityPlansPage from './activityPlans/ActivityPlansPage';
 import axios from 'axios';
 import GlobalVariables from '../globalVariables';
 import {
@@ -67,7 +69,10 @@ class App extends React.Component {
 
   renderAgreementsLink = () => {
     if (user.role === "COORDINATOR") {
-      return <li key="agreements"><Link to="/agreements" onClick={this.scrollToTop.bind(this)}>Agreements</Link></li>;
+      return <div>
+        <li key="agreements"><Link to="/agreements" onClick={this.scrollToTop.bind(this)}>Agreements</Link></li>
+        <li key="agreements"><Link to="/activity-plans" onClick={this.scrollToTop.bind(this)}>Activity plans</Link></li>
+      </div>;
     }
   }
 
@@ -80,7 +85,7 @@ class App extends React.Component {
             <Link to="#" className="dropbtn">Other</Link>
             <div className="dropdown-content">
               <Link to="/add-agreement">Add agreement</Link>
-              <Link to="/home">Add activity plan</Link>
+              <Link to="/add-activity-plan">Add activity plan</Link>
               <Link to="/home">Add event</Link>
             </div>
           </li>
@@ -112,7 +117,9 @@ class App extends React.Component {
           <Route path="/register"><RegisterPage /></Route>
           <Route path="/profile"><ProfilePage /></Route>
           <Route path="/add-agreement"><AddAgreementPage /></Route>
-          <Route path="/agreement/**"><AgreementPage /></Route>
+          <Route path="/agreement/edit/**"><AgreementPage /></Route>
+          <Route path="/add-activity-plan"><AddActivityPlanPage /></Route>
+          <Route path="/activity-plans"><ActivityPlansPage /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>

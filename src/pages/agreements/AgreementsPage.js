@@ -1,6 +1,6 @@
 import React from 'react';
-import '../css/AgreementsPage.css';
-import GlobalVariables from '../globalVariables';
+import '../../css/AgreementsPage.css';
+import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {
@@ -15,7 +15,7 @@ class AgreementsPage extends React.Component {
 
     state = {
         agreements: [],
-        maxAgreements: 11,
+        maxAgreements: 0,
         page: 0
     }
 
@@ -27,7 +27,10 @@ class AgreementsPage extends React.Component {
     fetchMoreData = () => {
         axios.get(GlobalVariables.backendUrl + "/agreements?page=" + this.state.page, { headers: headers })
             .then(response => {
-                this.setState({ ...this.state, agreements: this.state.agreements.concat(response.data.agreements) })
+                this.setState({
+                    agreements: this.state.agreements.concat(response.data.agreements),
+                    maxAgreements: response.data.maxElements
+                })
             },
                 error => {
                     if (error.response.status === 403) {
@@ -72,7 +75,7 @@ class AgreementsPage extends React.Component {
                                 <div className="card">
                                     <div className="edit-images">
                                         <Link to="#" onClick={() => this.deleteAgreement(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
-                                        <Link to={"/agreement/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
+                                        <Link to={"/agreement/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
                                     </div>
                                     <h3>{item.title}</h3>
                                     <p>Made on: {this.convertMilisecToDate(item.date)}</p>

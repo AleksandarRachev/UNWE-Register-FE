@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import GlobalVariables from '../globalVariables';
-import Error from '../Error/Error';
+import GlobalVariables from '../../globalVariables';
+import Error from '../../Error/Error';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
@@ -22,7 +22,7 @@ class AgreementPage extends React.Component {
 
     componentDidMount() {
         document.title = "UNWE: Agreement edit"
-        let agreementId = window.location.pathname.split("/agreement/")[1];
+        let agreementId = window.location.pathname.split("/agreement/edit/")[1];
         this.getAgreement(agreementId);
         this.getAllEmployers();
     }

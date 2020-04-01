@@ -4,13 +4,17 @@
 }
 
 .edit-button {
-    width: calc(10px + 1%);
+    width: calc(6px + 1%);
     float: right;
     padding: 1.5% 1% 0% 1%
 }
 
 .delete-button {
-    width: calc(10px + 1%);
+    width: calc(6px + 1%);
     float: right;
     padding: 1.5% 1% 0% 1%
+}
+
+h4 {
+    padding: 0 0 0 45%;
 }
