@@ -18,3 +18,12 @@
 h4 {
     padding: 0 0 0 45%;
 }
+
+.title-link {
+    text-decoration: none;
+    color:black;
+}
+
+.title-link:hover {
+    color: blue;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import Error from '../../Error/Error';
-import '../../css/AddAgreementPage.css';
+import '../../css/agreements/AddAgreementPage.css';
 import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
 

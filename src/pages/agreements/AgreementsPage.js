@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../css/AgreementsPage.css';
+import '../../css/agreements/AgreementsPage.css';
 import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -47,7 +47,7 @@ class AgreementsPage extends React.Component {
     }
 
     deleteAgreement = (agreementId) => {
-        let deleteAgreement = window.confirm("Are you sure you want to delete");
+        let deleteAgreement = window.confirm("Are you sure you want to delete?");
         if (deleteAgreement) {
             axios.delete(GlobalVariables.backendUrl + "/agreements/" + agreementId, { headers: headers })
                 .then(response => {
@@ -77,7 +77,7 @@ class AgreementsPage extends React.Component {
                                         <Link to="#" onClick={() => this.deleteAgreement(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
                                         <Link to={"/agreement/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
                                     </div>
-                                    <h3>{item.title}</h3>
+                                    <h3><Link className="title-link" to={"/agreement/details/" + item.uid}>{item.title}</Link></h3>
                                     <p>Made on: {this.convertMilisecToDate(item.date)}</p>
                                     <div className="card-content">
                                         <p>{item.description}</p>

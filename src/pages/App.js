@@ -9,6 +9,7 @@ import AddAgreementPage from './agreements/AddAgreementPage';
 import AgreementPage from './agreements/AgreementPage';
 import AddActivityPlanPage from './activityPlans/AddActivityPlanPage';
 import ActivityPlansPage from './activityPlans/ActivityPlansPage';
+import AgreementDetailsPage from './agreements/AgreementDetailsPage';
 import axios from 'axios';
 import GlobalVariables from '../globalVariables';
 import {
@@ -71,7 +72,7 @@ class App extends React.Component {
     if (user.role === "COORDINATOR") {
       return <div>
         <li key="agreements"><Link to="/agreements" onClick={this.scrollToTop.bind(this)}>Agreements</Link></li>
-        <li key="agreements"><Link to="/activity-plans" onClick={this.scrollToTop.bind(this)}>Activity plans</Link></li>
+        <li key="activity-plans"><Link to="/activity-plans" onClick={this.scrollToTop.bind(this)}>Activity plans</Link></li>
       </div>;
     }
   }
@@ -120,6 +121,7 @@ class App extends React.Component {
           <Route path="/agreement/edit/**"><AgreementPage /></Route>
           <Route path="/add-activity-plan"><AddActivityPlanPage /></Route>
           <Route path="/activity-plans"><ActivityPlansPage /></Route>
+          <Route path="/agreement/details/**"><AgreementDetailsPage /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>

@@ -41,13 +41,6 @@ class AgreementPage extends React.Component {
         console.log(this.state.dateInMilisec)
     }
 
-    asd = () => {
-        var curr = new Date();
-        curr.setDate(curr.getDate());
-        var date = curr.toISOString().substr(0, 10);
-        return date;
-    }
-
     convertMilisecToDate = (milisec) => {
         var date = new Date(milisec);
         date.setDate(date.getDate());

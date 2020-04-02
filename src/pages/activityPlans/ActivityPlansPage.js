@@ -2,6 +2,7 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
+import { Link } from 'react-router-dom';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
@@ -37,6 +38,17 @@ class ActivityPlansPage extends React.Component {
         this.setState({ ...this.state, page: this.state.page + 1 });
     };
 
+    deleteActivityPlan = (activityPlanId) => {
+        let deleteActivityPlan = window.confirm("Are you sure you want to delete?");
+        if (deleteActivityPlan) {
+            axios.delete(GlobalVariables.backendUrl + "/activityPlans/" + activityPlanId, { headers: headers })
+                .then(response => {
+                    alert(response.data);
+                    window.location.reload();
+                })
+        }
+    }
+
     render() {
         return (
             <div className="header">
@@ -52,8 +64,8 @@ class ActivityPlansPage extends React.Component {
                             <div className="leftcolumn">
                                 <div className="card">
                                     <div className="edit-images">
-                                        {/* <Link to="#" onClick={() => this.deleteAgreement(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
-                                        <Link to={"/agreement/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link> */}
+                                        <Link to="#" onClick={() => this.deleteActivityPlan(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
+                                        {/* <Link to={"/agreement/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link> */}
                                     </div>
                                     <h3>ID: {item.uid}</h3>
                                     <div className="card-content">
