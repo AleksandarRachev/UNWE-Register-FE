@@ -10,6 +10,7 @@ import AgreementPage from './agreements/AgreementPage';
 import AddActivityPlanPage from './activityPlans/AddActivityPlanPage';
 import ActivityPlansPage from './activityPlans/ActivityPlansPage';
 import AgreementDetailsPage from './agreements/AgreementDetailsPage';
+import AddEventPage from './events/AddEventPage';
 import axios from 'axios';
 import GlobalVariables from '../globalVariables';
 import {
@@ -77,6 +78,18 @@ class App extends React.Component {
     }
   }
 
+  renderAddLinks = () => {
+    if (user.role === "COORDINATOR") {
+      return <div>
+        <Link to="/add-agreement">Add agreement</Link>
+        <Link to="/add-activity-plan">Add activity plan</Link>
+      </div>
+    }
+    else {
+      return <Link to="/add-event">Add event</Link>
+    }
+  }
+
   renderIfLogged = () => {
     if (localStorage.getItem("token") != null) {
       return (
@@ -85,9 +98,7 @@ class App extends React.Component {
           <li key="dropdown" className="dropdown">
             <Link to="#" className="dropbtn">Other</Link>
             <div className="dropdown-content">
-              <Link to="/add-agreement">Add agreement</Link>
-              <Link to="/add-activity-plan">Add activity plan</Link>
-              <Link to="/home">Add event</Link>
+              {this.renderAddLinks()}
             </div>
           </li>
         </div>
@@ -122,6 +133,7 @@ class App extends React.Component {
           <Route path="/add-activity-plan"><AddActivityPlanPage /></Route>
           <Route path="/activity-plans"><ActivityPlansPage /></Route>
           <Route path="/agreement/details/**"><AgreementDetailsPage /></Route>
+          <Route path="/add-event"><AddEventPage /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>
