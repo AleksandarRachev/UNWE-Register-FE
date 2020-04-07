@@ -8,6 +8,8 @@ const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
 }
 
+const user = JSON.parse(localStorage.getItem("user"));
+
 class ActivityPlansPage extends React.Component {
 
     state = {
@@ -22,7 +24,15 @@ class ActivityPlansPage extends React.Component {
     }
 
     fetchMoreData = () => {
-        axios.get(GlobalVariables.backendUrl + "/activityPlans?page=" + this.state.page, { headers: headers })
+        let activityUrl;
+        if (user.role === "COORDINATOR") {
+            activityUrl = "/activityPlans?page=";
+        }
+        else {
+            activityUrl = "/activityPlans/user?page=";
+        }
+
+        axios.get(GlobalVariables.backendUrl + activityUrl + this.state.page, { headers: headers })
             .then(response => {
                 this.setState({
                     activityPlans: this.state.activityPlans.concat(response.data.activityPlans),
@@ -49,6 +59,14 @@ class ActivityPlansPage extends React.Component {
         }
     }
 
+    renderDeleteIcon = (item) => {
+        if (user.role === "COORDINATOR") {
+            return <div className="edit-images">
+                <Link to="#" onClick={() => this.deleteActivityPlan(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
+            </div>;
+        }
+    }
+
     render() {
         return (
             <div className="header">
@@ -63,10 +81,7 @@ class ActivityPlansPage extends React.Component {
                         return <div key={i} className="row">
                             <div className="leftcolumn">
                                 <div className="card">
-                                    <div className="edit-images">
-                                        <Link to="#" onClick={() => this.deleteActivityPlan(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
-                                        {/* <Link to={"/agreement/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link> */}
-                                    </div>
+                                    {this.renderDeleteIcon(item)}
                                     <h3>ID: {item.uid}</h3>
                                     <div className="card-content">
                                         <p>{item.description}</p>

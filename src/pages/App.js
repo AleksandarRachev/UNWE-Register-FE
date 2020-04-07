@@ -73,7 +73,6 @@ class App extends React.Component {
     if (user.role === "COORDINATOR") {
       return <div>
         <li key="agreements"><Link to="/agreements" onClick={this.scrollToTop.bind(this)}>Agreements</Link></li>
-        <li key="activity-plans"><Link to="/activity-plans" onClick={this.scrollToTop.bind(this)}>Activity plans</Link></li>
       </div>;
     }
   }
@@ -95,6 +94,7 @@ class App extends React.Component {
       return (
         <div>
           {this.renderAgreementsLink()}
+        <li key="activity-plans"><Link to="/activity-plans" onClick={this.scrollToTop.bind(this)}>Activity plans</Link></li>
           <li key="dropdown" className="dropdown">
             <Link to="#" className="dropbtn">Other</Link>
             <div className="dropdown-content">

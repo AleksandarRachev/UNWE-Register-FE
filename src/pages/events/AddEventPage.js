@@ -2,6 +2,7 @@ import React from 'react';
 import Error from '../../Error/Error';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
+import '../../css/events/AddEventPage.css';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
@@ -13,11 +14,20 @@ class AddEventPage extends React.Component {
         title: null,
         description: null,
         activityPlanId: null,
-        image: null
+        image: null,
+        activityPlans: []
     }
 
     componentDidMount() {
         document.title = "UNWE: Add event";
+        this.getActivityPlans();
+    }
+
+    getActivityPlans = () => {
+        axios.get(GlobalVariables + "/activityPlans/user", { headers: headers })
+            .then(response => {
+                this.setState({ ...this.state, activityPlans: response.data })
+            })
     }
 
     submitAddEvent = (e) => {
@@ -36,7 +46,6 @@ class AddEventPage extends React.Component {
                 document.getElementById("description").value = "";
                 document.getElementById("activity").value = "";
                 alert("Event added!")
-                window.location.href = "/home";
             },
                 error => {
                     this.setState({ ...this.state, error: null })
@@ -56,17 +65,7 @@ class AddEventPage extends React.Component {
 
     handleImageChange = (e) => {
 
-        let reader = new FileReader();
         let file = e.target.files[0];
-
-        // reader.onloadend = () => {
-        //     this.setState({
-        //         image: file,
-        //         imagePreviewUrl: reader.result
-        //     });
-        // }
-
-        reader.readAsDataURL(file)
 
         const data = this.state.data == null ? new FormData() : this.state.data;
         data.set('image', file);
@@ -90,18 +89,14 @@ class AddEventPage extends React.Component {
         return (
             <div className="header">
                 {this.state.error && <Error message={this.state.error} />}
-                <div>
-                    <form onSubmit={(e) => e.preventDefault()}>
-                        <input id="image" type="file" onChange={e => this.handleImageChange(e)} />
-                        <input id="title" placeholder="* Title" onChange={e => this.handleTitleChange(e)} />
-                        <textarea id="description" placeholder="* Description" onChange={e => this.handleDescriptionChange(e)} />
-                        <select id="activity" placeholder="activityPlanID" onChange={e => this.handleActivityChange(e)} >
-                            <option value=""></option>
-                            <option value="6724f7a6-0abd-4ae2-85ee-a81ad7fa108a">ASd</option>
-                        </select>
-                        <button type="submit" onClick={e => this.submitAddEvent(e)}>Add event</button>
-                    </form>
-                </div>
+                <form className="add-event-form" onSubmit={(e) => e.preventDefault()}>
+                    <h1>Add event</h1>
+                    <input id="image" type="file" onChange={e => this.handleImageChange(e)} /><br />
+                    <input className="input-event" id="title" placeholder="* Title" onChange={e => this.handleTitleChange(e)} />
+                    <textarea className="textarea-event" id="description" placeholder="* Description" onChange={e => this.handleDescriptionChange(e)} />
+                    <input className="input-event" id="activity" placeholder="* Activity ID" onChange={e => this.handleActivityChange(e)} /><br />
+                    <button className="event-submit" type="submit" onClick={e => this.submitAddEvent(e)}>Add event</button>
+                </form>
             </div>
         );
     }

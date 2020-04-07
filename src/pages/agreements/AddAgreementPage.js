@@ -30,6 +30,10 @@ class AddAgreementPage extends React.Component {
             })
     }
 
+    getActivityPlans = () => {
+        
+    }
+
     submitForm = (e) => {
 
         axios.post(GlobalVariables.backendUrl + "/agreements", {
@@ -89,6 +93,7 @@ class AddAgreementPage extends React.Component {
                     <input id="date" type="date" onChange={e => this.handleDateChange(e)} /><br />
                     <input className="input-agreement" id="title" placeholder="Title" onChange={e => this.handleTitleChange(e)} /><br />
                     <textarea className="agreement-textarea" id="description" placeholder="Decription" onChange={e => this.handleDescriptionChange(e)} /><br />
+                    <label>Employer</label><br />
                     <select id="employer" className="employer-select" onChange={e => this.handleEmployerChange(e)}>
                         <option value=""></option>
                         {this.state.employers.map((item, i) => {
