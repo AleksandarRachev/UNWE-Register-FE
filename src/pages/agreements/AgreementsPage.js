@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../css/agreements/AgreementsPage.css';
+import Error from '../../Error/Error';
 import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -53,7 +54,20 @@ class AgreementsPage extends React.Component {
                 .then(response => {
                     alert(response.data);
                     window.location.reload();
-                })
+                },
+                    error => {
+                        this.setState({ ...this.state, error: null })
+                        if (error.response.status === 403) {
+                            localStorage.clear();
+                            window.location.href = "/login";
+                        }
+                        if (error.response.data.message != null) {
+                            this.setState({ ...this.state, error: "There was an error: " + error.response.data.message })
+                        }
+                        else {
+                            this.setState({ ...this.state, error: "Oops there was a problem." })
+                        }
+                    })
         }
     }
 
@@ -69,6 +83,7 @@ class AgreementsPage extends React.Component {
                     hasMore={this.state.agreements.length < this.state.maxAgreements}
                     loader={<h4>Loading...</h4>}
                 >
+                    {this.state.error && <Error message={this.state.error} />}
                     {this.state.agreements.map((item, i) => {
                         return <div key={i} className="row">
                             <div className="leftcolumn">
