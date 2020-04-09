@@ -87,7 +87,6 @@ class AddAgreementPage extends React.Component {
     }
 
     handleFileChange = (e) => {
-
         let file = e.target.files[0];
 
         const data = this.state.data == null ? new FormData() : this.state.data;

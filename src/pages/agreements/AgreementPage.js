@@ -7,18 +7,22 @@ const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
 }
 
+const initialState = {
+    data: null,
+    agreementId: null,
+    employers: [],
+    dateInMilisec: null,
+    title: null,
+    description: null,
+    employerId: null,
+    employerFirstName: null,
+    employerLastName: null,
+    pdfUrl: "#",
+}
+
 class AgreementPage extends React.Component {
 
-    state = {
-        agreementId: null,
-        employers: [],
-        dateInMilisec: null,
-        title: null,
-        description: null,
-        employerId: null,
-        employerFirstName: null,
-        employerLastName: null
-    }
+    state = initialState;
 
     componentDidMount() {
         document.title = "UNWE: Agreement edit"
@@ -59,6 +63,15 @@ class AgreementPage extends React.Component {
         this.setState({ ...this.state, employerId: e.target.value });
     }
 
+    handleFileChange = (e) => {
+
+        let file = e.target.files[0];
+
+        const data = this.state.data == null ? new FormData() : this.state.data;
+        data.set('document', file);
+        this.setState({ ...this.state, data: data });
+    }
+
     getAgreement = (agreementId) => {
         axios.get(GlobalVariables.backendUrl + "/agreements/" + agreementId, { headers: headers })
             .then(response => {
@@ -69,20 +82,23 @@ class AgreementPage extends React.Component {
                     dateInMilisec: response.data.date,
                     employerId: response.data.employerUid,
                     employerFirstName: response.data.employerFirstName,
-                    employerLastName: response.data.employerLastName
+                    employerLastName: response.data.employerLastName,
+                    pdfUrl: response.data.pdfUrl
                 })
             })
     }
 
     submitForm = (e) => {
 
-        axios.put(GlobalVariables.backendUrl + "/agreements", {
-            uid: this.state.agreementId,
-            title: this.state.title,
-            description: this.state.description,
-            date: this.state.dateInMilisec,
-            employerId: this.state.employerId
-        }, { headers: headers })
+        const data = this.state.data == null ? new FormData() : this.state.data;
+        data.set('uid', this.state.agreementId)
+        data.set('employerId', this.state.employerId === null ? "" : this.state.employerId);
+        data.set('date', this.state.dateInMilisec === null ? "" : this.state.dateInMilisec);
+        data.set('title', this.state.title === null ? "" : this.state.title);
+        data.set('description', this.state.description === null ? "" : this.state.description);
+        this.setState({ ...this.state, data: data });
+
+        axios.put(GlobalVariables.backendUrl + "/agreements", data, { headers: headers })
             .then(respone => {
                 alert("Updated!")
             },
@@ -118,6 +134,9 @@ class AgreementPage extends React.Component {
                             <option value={this.state.employerUid}>{this.state.employerFirstName
                                 + " " + this.state.employerLastName}</option>
                         </select><br />
+                        <a className="download-file-link" href={this.state.pdfUrl}>View document</a><br />
+                        <label>Select file:</label><br />
+                        <input className="document-input" id="file" type="file" onChange={e => this.handleFileChange(e)} /><br />
                         <button className="agreement-button" type="submit" onClick={e => this.submitForm(e)}>Save</button>
                     </form>
                 </div>
