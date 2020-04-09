@@ -80,8 +80,8 @@ class App extends React.Component {
   renderAddLinks = () => {
     if (user.role === "COORDINATOR") {
       return <div>
-        <Link to="/add-agreement">Add agreement</Link>
         <Link to="/add-activity-plan">Add activity plan</Link>
+        <Link to="/add-agreement">Add agreement</Link>
       </div>
     }
     else {
@@ -93,8 +93,8 @@ class App extends React.Component {
     if (localStorage.getItem("token") != null) {
       return (
         <div>
+          <li key="activity-plans"><Link to="/activity-plans" onClick={this.scrollToTop.bind(this)}>Activity plans</Link></li>
           {this.renderAgreementsLink()}
-        <li key="activity-plans"><Link to="/activity-plans" onClick={this.scrollToTop.bind(this)}>Activity plans</Link></li>
           <li key="dropdown" className="dropdown">
             <Link to="#" className="dropbtn">Other</Link>
             <div className="dropdown-content">

@@ -91,6 +91,7 @@ class AgreementsPage extends React.Component {
                                     <div className="edit-images">
                                         <Link to="#" onClick={() => this.deleteAgreement(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
                                         <Link to={"/agreement/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
+                                        <a href={item.pdfUrl}><img alt="edit" className="edit-button" src="download-icon.png" /></a>
                                     </div>
                                     <h3><Link className="title-link" to={"/agreement/details/" + item.uid}>{item.title}</Link></h3>
                                     <p>Made on: {this.convertMilisecToDate(item.date)}</p>

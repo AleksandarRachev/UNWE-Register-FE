@@ -12,7 +12,7 @@
 
 .input-agreement{
     border-radius: 5px;
-    margin: 0 0 2% 0;
+    margin: 2% 0 2% 0;
     padding: 1% 1% 1% 1%;
     border: 1px solid black;
     width: 40%;
@@ -40,11 +40,15 @@
 
 .employer-select {
     padding: 1% 6% 1% 1%;
-    margin: 2% 0 2% 0;
+    margin: 1% 0 2% 0;
     border: 1px solid black;
     border-radius: 5px;
 }
 
 label {
     margin: 2% 0 0 0;
+}
+
+.document-input {
+    padding: 0 0 2% 0;
 }

@@ -8,15 +8,18 @@ const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
 }
 
+const initialState = {
+    data: null,
+    dateInMilisec: null,
+    title: null,
+    description: null,
+    employerId: null,
+    employers: []
+}
+
 class AddAgreementPage extends React.Component {
 
-    state = {
-        dateInMilisec: null,
-        title: null,
-        description: null,
-        employerId: null,
-        employers: []
-    }
+    state = initialState;
 
     componentDidMount() {
         document.title = "UNWE: Add agreement";
@@ -30,23 +33,23 @@ class AddAgreementPage extends React.Component {
             })
     }
 
-    getActivityPlans = () => {
-        
-    }
-
     submitForm = (e) => {
 
-        axios.post(GlobalVariables.backendUrl + "/agreements", {
-            title: this.state.title,
-            description: this.state.description,
-            date: this.state.dateInMilisec,
-            employerId: this.state.employerId
-        }, { headers: headers })
+        const data = this.state.data == null ? new FormData() : this.state.data;
+        data.set('employerId', this.state.employerId === null ? "" : this.state.employerId);
+        data.set('date', this.state.dateInMilisec === null ? "" : this.state.dateInMilisec);
+        data.set('title', this.state.title === null ? "" : this.state.title);
+        data.set('description', this.state.description === null ? "" : this.state.description);
+        this.setState({ ...this.state, data: data });
+
+        axios.post(GlobalVariables.backendUrl + "/agreements", data, { headers: headers })
             .then(respone => {
                 document.getElementById("date").value = null;
                 document.getElementById("title").value = null;
                 document.getElementById("description").value = null;
                 document.getElementById("employer").value = null;
+                document.getElementById("file").value = null;
+                this.setState({ initialState })
                 alert("Saved!")
             },
                 error => {
@@ -83,6 +86,15 @@ class AddAgreementPage extends React.Component {
         this.setState({ ...this.state, employerId: e.target.value });
     }
 
+    handleFileChange = (e) => {
+
+        let file = e.target.files[0];
+
+        const data = this.state.data == null ? new FormData() : this.state.data;
+        data.set('document', file);
+        this.setState({ ...this.state, data: data });
+    }
+
     render() {
         return (
             <div className="header">
@@ -100,6 +112,8 @@ class AddAgreementPage extends React.Component {
                             return <option key={i} value={item.uid}>{item.firstName + " " + item.lastName}</option>
                         })}
                     </select><br />
+                    <label>Select file:</label><br />
+                    <input className="document-input" id="file" type="file" onChange={e => this.handleFileChange(e)} /><br />
                     <button className="agreement-button" type="submit" onClick={e => this.submitForm(e)}>Save</button>
                 </form>
             </div>
