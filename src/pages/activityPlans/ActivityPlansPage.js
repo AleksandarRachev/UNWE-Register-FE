@@ -91,6 +91,11 @@ class ActivityPlansPage extends React.Component {
                     next={this.fetchMoreData}
                     hasMore={this.state.activityPlans.length < this.state.maxActivityPlans}
                     loader={<h4>Loading...</h4>}
+                    endMessage={
+                        <p style={{ textAlign: 'center' }}>
+                            <b>You've reached the end of the activity plans</b>
+                        </p>
+                    }
                 >
                     {this.state.error && <Error message={this.state.error} />}
                     {this.state.activityPlans.map((item, i) => {

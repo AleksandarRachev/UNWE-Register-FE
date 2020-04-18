@@ -82,6 +82,11 @@ class AgreementsPage extends React.Component {
                     next={this.fetchMoreData}
                     hasMore={this.state.agreements.length < this.state.maxAgreements}
                     loader={<h4>Loading...</h4>}
+                    endMessage={
+                        <p style={{ textAlign: 'center' }}>
+                            <b>You've reached the end of the agreements!</b>
+                        </p>
+                    }
                 >
                     {this.state.error && <Error message={this.state.error} />}
                     {this.state.agreements.map((item, i) => {

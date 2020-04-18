@@ -1,10 +1,11 @@
 import React from 'react';
-import '../../css/HomePage.css';
+import '../../css/events/HomePage.css';
 import Error from '../../Error/Error';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
 import { Link } from 'react-router-dom';
+import { debounce } from 'throttle-debounce';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
@@ -17,7 +18,8 @@ class HomePage extends React.Component {
     state = {
         events: [],
         maxElements: 0,
-        page: 0
+        page: 0,
+        search: ""
     }
 
     componentDidMount() {
@@ -26,7 +28,7 @@ class HomePage extends React.Component {
     }
 
     fetchMoreData = () => {
-        axios.get(GlobalVariables.backendUrl + "/events?page=" + this.state.page, {})
+        axios.get(GlobalVariables.backendUrl + "/events?page=" + this.state.page + "&search=" + this.state.search, {})
             .then(response => {
                 this.setState({
                     events: this.state.events.concat(response.data.events),
@@ -69,19 +71,49 @@ class HomePage extends React.Component {
         }
     }
 
+    changeSearchField = (search) => {
+        this.setState({ ...this.state, search: search })
+    }
+
     render() {
+        const debounceSearch = debounce(500, value => {
+            if (value !== null) {
+                this.changeSearchField(value);
+                this.setState({
+                    events: [],
+                    page: 0,
+                    maxElements: 0
+                })
+                this.fetchMoreData();
+            }
+        });
+
+        const onChangeSearch = (e) => {
+            debounceSearch(e.target.value);
+        };
+
         return (
             <div>
                 <div className="header">
                     <h2>Events</h2>
+                    <div className="wrapper">
+                        <img className="search-icon" alt="search" src="search-icon.png" />
+                        <input onChange={e => onChangeSearch(e)} className="search" placeholder="Search" type="text" />
+                    </div>
                 </div>
                 <InfiniteScroll
                     dataLength={this.state.events.length}
                     next={this.fetchMoreData}
                     hasMore={this.state.events.length < this.state.maxElements}
                     loader={<h4>Loading...</h4>}
+                    endMessage={
+                        <p style={{ textAlign: 'center' }}>
+                            <b>You've reached the end of the events</b>
+                        </p>
+                    }
                 >
                     {this.state.error && <Error message={this.state.error} />}
+
                     {this.state.events.map((item, i) => {
                         if (i % 2 === 0) {
                             return <div key={i} className="row">
