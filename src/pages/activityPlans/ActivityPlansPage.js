@@ -73,10 +73,11 @@ class ActivityPlansPage extends React.Component {
         }
     }
 
-    renderDeleteIcon = (item) => {
+    renderIcons = (item) => {
         if (user.role === "COORDINATOR") {
             return <div className="edit-images">
                 <Link to="#" onClick={() => this.deleteActivityPlan(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
+                <Link to={"/activity-plan/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
             </div>;
         }
     }
@@ -96,7 +97,7 @@ class ActivityPlansPage extends React.Component {
                         return <div key={i} className="row">
                             <div className="leftcolumn">
                                 <div className="card">
-                                    {this.renderDeleteIcon(item)}
+                                    {this.renderIcons(item)}
                                     <h3>ID: {item.uid}</h3>
                                     <div className="card-content">
                                         <p>{item.description}</p>

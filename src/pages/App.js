@@ -2,15 +2,16 @@ import React from 'react';
 import '../css/App.css';
 import HomePage from './HomePage';
 import AgreementsPage from './agreements/AgreementsPage';
-import LoginPage from './LoginPage';
-import RegisterPage from './RegisterPage';
-import ProfilePage from './ProfilePage';
+import LoginPage from './user/LoginPage';
+import RegisterPage from './user/RegisterPage';
+import ProfilePage from './user/ProfilePage';
 import AddAgreementPage from './agreements/AddAgreementPage';
 import AgreementPage from './agreements/AgreementPage';
 import AddActivityPlanPage from './activityPlans/AddActivityPlanPage';
 import ActivityPlansPage from './activityPlans/ActivityPlansPage';
 import AgreementDetailsPage from './agreements/AgreementDetailsPage';
 import AddEventPage from './events/AddEventPage';
+import EditActivityPlanPage from './activityPlans/EditActivityPlanPage';
 import axios from 'axios';
 import GlobalVariables from '../globalVariables';
 import {
@@ -131,6 +132,7 @@ class App extends React.Component {
           <Route path="/add-agreement"><AddAgreementPage /></Route>
           <Route path="/agreement/edit/**"><AgreementPage /></Route>
           <Route path="/add-activity-plan"><AddActivityPlanPage /></Route>
+          <Route path="/activity-plan/edit"><EditActivityPlanPage /></Route>
           <Route path="/activity-plans"><ActivityPlansPage /></Route>
           <Route path="/agreement/details/**"><AgreementDetailsPage /></Route>
           <Route path="/add-event"><AddEventPage /></Route>

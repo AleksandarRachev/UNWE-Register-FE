@@ -1,8 +1,8 @@
-import GlobalVariables from '../globalVariables';
+import GlobalVariables from '../../globalVariables';
 import React from 'react';
-import Error from '../Error/Error';
+import Error from '../../Error/Error';
 import axios from 'axios';
-import '../css/LoginPage.css';
+import '../../css/LoginPage.css';
 import {
     Link
 } from 'react-router-dom';

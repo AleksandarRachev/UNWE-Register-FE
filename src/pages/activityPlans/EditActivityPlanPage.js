@@ -1,22 +1,35 @@
 import React from 'react';
-import Error from '../../Error/Error';
-import '../../css/AddActivityPlanPage.css';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
+import Error from '../../Error/Error';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
 }
 
-class ActivityPlanPage extends React.Component {
+class EditActivityPlanPage extends React.Component {
 
     state = {
-        agreementNumber: null,
-        description: null
+        uid: null,
+        description: null,
+        agreementNumber: null
     }
 
     componentDidMount() {
-        document.title = "UNWE: Add Activity plan";
+        document.title = "UNWE: Edit activity plan";
+        let activityPlanId = window.location.pathname.split("/activity-plan/edit/")[1];
+        this.getActivityPlan(activityPlanId);
+    }
+
+    getActivityPlan = (uid) => {
+        axios.get(GlobalVariables.backendUrl + "/activityPlans/" + uid, { headers: headers })
+            .then(response => {
+                this.setState({
+                    uid: response.data.uid,
+                    description: response.data.description,
+                    agreementNumber: response.data.agreementNumber
+                })
+            })
     }
 
     handleAgreementNumberChange = e => {
@@ -28,16 +41,14 @@ class ActivityPlanPage extends React.Component {
     }
 
     submitForm = () => {
-        axios.post(GlobalVariables.backendUrl + "/activityPlans", {
+        axios.put(GlobalVariables.backendUrl + "/activityPlans", {
+            uid: this.state.uid,
             description: this.state.description,
             agreementNumber: this.state.agreementNumber
         }, { headers: headers })
-            .then(
-                response => {
-                    alert("Activity plan saved!\nActivity plan id: " + response.data.uid);
-                    document.getElementById("agreementNumber").value = "";
-                    document.getElementById("description").value = "";
-                },
+            .then(response => {
+                alert("Activity plan edited!\nActivity plan id: " + response.data.uid)
+            },
                 error => {
                     this.setState({ ...this.state, error: null })
                     if (error.response.status === 403) {
@@ -50,8 +61,7 @@ class ActivityPlanPage extends React.Component {
                     else {
                         this.setState({ ...this.state, error: "Oops there was a problem." })
                     }
-                }
-            );
+                });
     }
 
     render() {
@@ -59,13 +69,13 @@ class ActivityPlanPage extends React.Component {
             <div className="header">
                 {this.state.error && <Error message={this.state.error} />}
                 <form className="agreement-form" onSubmit={e => e.preventDefault()}>
-                    <h1>Add activity plan</h1>
-                    <input className="input-agreement" id="agreementNumber" type="number" placeholder="Agreement number" onChange={e => this.handleAgreementNumberChange(e)} /><br />
-                    <textarea className="agreement-textarea" id="description" placeholder="Decription" onChange={e => this.handleDescriptionChange(e)} /><br />
+                    <h1>Edit activity plan</h1>
+                    <input value={this.state.agreementNumber} className="input-agreement" id="agreementNumber" type="number" placeholder="Agreement number" onChange={e => this.handleAgreementNumberChange(e)} /><br />
+                    <textarea value={this.state.description} className="agreement-textarea" id="description" placeholder="Decription" onChange={e => this.handleDescriptionChange(e)} /><br />
                     <button className="agreement-button" type="submit" onClick={e => this.submitForm()}>Save</button>
                 </form>
             </div>
         );
     }
 }
-export default ActivityPlanPage;
+export default EditActivityPlanPage;

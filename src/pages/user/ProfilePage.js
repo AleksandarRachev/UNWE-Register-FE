@@ -1,9 +1,9 @@
 import React from 'react';
-import Error from '../Error/Error';
-import '../css/ProfilePage.css';
-import GlobalVariables from '../globalVariables';
+import Error from '../../Error/Error';
+import '../../css/ProfilePage.css';
+import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
-import EditPassword from '../components/EditPassword';
+import EditPassword from '../../components/EditPassword';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
@@ -44,7 +44,16 @@ class ProfilePage extends React.Component {
         this.setState({ ...this.state, data: data });
 
         axios.put(GlobalVariables.backendUrl + "/users", data, { headers: headers })
-            .then(respone => {
+            .then(response => {
+                this.setState({
+                    email: response.data.email,
+                    firstName: response.data.firstName,
+                    lastName: response.data.lastName,
+                    address: response.data.address,
+                    contactPerson: response.data.contactPerson,
+                    imageUrl: response.data.imageUrl
+                })
+
                 user.email = this.state.email;
                 user.firstName = this.state.firstName;
                 user.lastName = this.state.lastName;
@@ -52,7 +61,8 @@ class ProfilePage extends React.Component {
                 user.contactPerson = this.state.contactPerson;
                 user.imageUrl = this.state.imagePreviewUrl
                 localStorage.setItem("user", JSON.stringify(user))
-                alert("Profile updated!")
+                alert("Profile updated!");
+                window.location.reload();
             },
                 error => {
                     this.setState({ ...this.state, error: null })
