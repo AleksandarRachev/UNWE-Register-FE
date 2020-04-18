@@ -1,9 +1,9 @@
 import React from 'react';
-import '../css/HomePage.css';
-import Error from '../Error/Error';
+import '../../css/HomePage.css';
+import Error from '../../Error/Error';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from 'axios';
-import GlobalVariables from '../globalVariables';
+import GlobalVariables from '../../globalVariables';
 import { Link } from 'react-router-dom';
 
 const headers = {
@@ -60,10 +60,11 @@ class HomePage extends React.Component {
         }
     }
 
-    renderDeleteIcon = (item) => {
+    renderIcons = (item) => {
         if (user && user.role === "EMPLOYER") {
             return <div className="edit-images">
                 <Link to="#" onClick={() => this.deleteEvent(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
+                <Link to={"/edit-event/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
             </div>;
         }
     }
@@ -86,7 +87,7 @@ class HomePage extends React.Component {
                             return <div key={i} className="row">
                                 <div className="leftcolumn">
                                     <div className="card">
-                                        {this.renderDeleteIcon(item)}
+                                        {this.renderIcons(item)}
                                         <h3>{item.title}</h3>
                                         <div className="card-content">
                                             <p>{item.description}</p>
@@ -100,7 +101,7 @@ class HomePage extends React.Component {
                             return <div key={i} className="row">
                                 <div className="leftcolumn">
                                     <div className="card">
-                                        {this.renderDeleteIcon(item)}
+                                        {this.renderIcons(item)}
                                         <h3>{item.title}</h3>
                                         <div className="card-content">
                                             <img alt="event" className="fakeimg" src={item.imageUrl === null ? "text-pic.jpg" : item.imageUrl} />

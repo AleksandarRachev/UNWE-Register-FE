@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/App.css';
-import HomePage from './HomePage';
+import HomePage from './events/HomePage';
 import AgreementsPage from './agreements/AgreementsPage';
 import LoginPage from './user/LoginPage';
 import RegisterPage from './user/RegisterPage';
@@ -12,6 +12,7 @@ import ActivityPlansPage from './activityPlans/ActivityPlansPage';
 import AgreementDetailsPage from './agreements/AgreementDetailsPage';
 import AddEventPage from './events/AddEventPage';
 import EditActivityPlanPage from './activityPlans/EditActivityPlanPage';
+import EditEventPage from './events/EditEventPage';
 import axios from 'axios';
 import GlobalVariables from '../globalVariables';
 import {
@@ -136,6 +137,7 @@ class App extends React.Component {
           <Route path="/activity-plans"><ActivityPlansPage /></Route>
           <Route path="/agreement/details/**"><AgreementDetailsPage /></Route>
           <Route path="/add-event"><AddEventPage /></Route>
+          <Route path="/edit-event"><EditEventPage /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>

@@ -1,45 +1,53 @@
 import React from 'react';
-import Error from '../../Error/Error';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
-import '../../css/events/AddEventPage.css';
+import Error from '../../Error/Error';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
 }
 
-const initState = {
-    title: null,
-    description: null,
-    activityPlanId: null,
-    image: null
-}
+class EditEventPage extends React.Component {
 
-class AddEventPage extends React.Component {
-
-    state = initState;
-
-    componentDidMount() {
-        document.title = "UNWE: Add event";
+    state = {
+        uid: null,
+        title: null,
+        description: null,
+        activityPlanId: null,
+        image: null
     }
 
-    submitAddEvent = (e) => {
+    componentDidMount() {
+        document.title = "UNWE: Edit event";
+        let eventId = window.location.pathname.split("/edit-event/")[1];
+        this.getEvent(eventId)
+    }
+
+    getEvent = (uid) => {
+        axios.get(GlobalVariables.backendUrl + "/events/" + uid, {})
+            .then(response => {
+                this.setState({
+                    uid: response.data.uid,
+                    title: response.data.title,
+                    description: response.data.description,
+                    activityPlanId: response.data.activityPlanUid
+                });
+            })
+    }
+
+    submitEditEvent = (e) => {
         e.preventDefault();
 
         const data = this.state.data == null ? new FormData() : this.state.data;
+        data.set('eventId', this.state.uid);
         data.set('title', this.state.title);
         data.set('description', this.state.description);
         data.set('activityPlanId', this.state.activityPlanId);
         this.setState({ ...this.state, data: data });
 
-        axios.post(GlobalVariables.backendUrl + "/events", data, { headers: headers })
+        axios.put(GlobalVariables.backendUrl + "/events", data, { headers: headers })
             .then(respone => {
-                document.getElementById("image").value = "";
-                document.getElementById("title").value = "";
-                document.getElementById("description").value = "";
-                document.getElementById("activity").value = "";
-                alert("Event added!")
-                this.setState(initState)
+                alert("Event edited!")
             },
                 error => {
                     this.setState({ ...this.state, error: null })
@@ -79,20 +87,19 @@ class AddEventPage extends React.Component {
     }
 
     render() {
-
         return (
             <div className="header">
                 {this.state.error && <Error message={this.state.error} />}
                 <form className="add-event-form" onSubmit={(e) => e.preventDefault()}>
-                    <h1>Add event</h1>
+                    <h1>Edit event</h1>
                     <input id="image" type="file" onChange={e => this.handleImageChange(e)} /><br />
-                    <input className="input-event" id="title" placeholder="* Title" onChange={e => this.handleTitleChange(e)} />
-                    <textarea className="textarea-event" id="description" placeholder="* Description" onChange={e => this.handleDescriptionChange(e)} />
-                    <input className="input-event" id="activity" placeholder="* Activity ID" onChange={e => this.handleActivityChange(e)} /><br />
-                    <button className="event-submit" type="submit" onClick={e => this.submitAddEvent(e)}>Add event</button>
+                    <input value={this.state.title} className="input-event" id="title" placeholder="* Title" onChange={e => this.handleTitleChange(e)} />
+                    <textarea value={this.state.description} className="textarea-event" id="description" placeholder="* Description" onChange={e => this.handleDescriptionChange(e)} />
+                    <input value={this.state.activityPlanId} className="input-event" id="activity" placeholder="* Activity ID" onChange={e => this.handleActivityChange(e)} /><br />
+                    <button className="event-submit" type="submit" onClick={e => this.submitEditEvent(e)}>Edit event</button>
                 </form>
             </div>
         );
     }
 }
-export default AddEventPage;
+export default EditEventPage;
