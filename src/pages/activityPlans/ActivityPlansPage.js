@@ -1,8 +1,10 @@
 import React from 'react';
 import Error from '../../Error/Error';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import '../../css/activityPlans/ActivityPlansPage.css';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
+import { debounce } from 'throttle-debounce';
 import { Link } from 'react-router-dom';
 
 const headers = {
@@ -16,7 +18,8 @@ class ActivityPlansPage extends React.Component {
     state = {
         activityPlans: [],
         maxActivityPlans: 0,
-        page: 0
+        page: 0,
+        search: ""
     }
 
     componentDidMount() {
@@ -33,7 +36,7 @@ class ActivityPlansPage extends React.Component {
             activityUrl = "/activityPlans/user?page=";
         }
 
-        axios.get(GlobalVariables.backendUrl + activityUrl + this.state.page, { headers: headers })
+        axios.get(GlobalVariables.backendUrl + activityUrl + this.state.page + "&search=" + this.state.search, { headers: headers })
             .then(response => {
                 this.setState({
                     activityPlans: this.state.activityPlans.concat(response.data.activityPlans),
@@ -82,10 +85,34 @@ class ActivityPlansPage extends React.Component {
         }
     }
 
+    changeSearchField = (search) => {
+        this.setState({ ...this.state, search: search })
+    }
+
     render() {
+        const debounceSearch = debounce(500, value => {
+            if (value !== null) {
+                this.changeSearchField(value);
+                this.setState({
+                    activityPlans: [],
+                    page: 0,
+                    maxElements: 0
+                })
+                this.fetchMoreData();
+            }
+        });
+
+        const onChangeSearch = (e) => {
+            debounceSearch(e.target.value);
+        };
+
         return (
             <div className="header">
                 <h2>Activity plans</h2>
+                <div className="wrapper">
+                    <img className="search-icon" alt="search" src="search-icon.png" />
+                    <input onChange={e => onChangeSearch(e)} className="search" placeholder="Search" type="text" />
+                </div>
                 <InfiniteScroll
                     dataLength={this.state.activityPlans.length}
                     next={this.fetchMoreData}
@@ -103,7 +130,7 @@ class ActivityPlansPage extends React.Component {
                             <div className="leftcolumn">
                                 <div className="card">
                                     {this.renderIcons(item)}
-                                    <h3>ID: {item.uid}</h3>
+                                    <h5>ID: {item.uid}</h5>
                                     <div className="card-content">
                                         <p>{item.description}</p>
                                     </div>

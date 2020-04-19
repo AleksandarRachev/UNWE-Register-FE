@@ -1,6 +1,6 @@
 import React from 'react';
 import Error from '../../Error/Error';
-import '../../css/AddActivityPlanPage.css';
+import '../../css/activityPlans/AddActivityPlanPage.css';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
 
