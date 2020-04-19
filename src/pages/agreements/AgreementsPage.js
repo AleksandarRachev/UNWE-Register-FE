@@ -4,6 +4,7 @@ import Error from '../../Error/Error';
 import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { debounce } from 'throttle-debounce';
 import {
     Link
 } from "react-router-dom";
@@ -17,7 +18,8 @@ class AgreementsPage extends React.Component {
     state = {
         agreements: [],
         maxAgreements: 0,
-        page: 0
+        page: 0,
+        search: ""
     }
 
     componentDidMount() {
@@ -26,7 +28,7 @@ class AgreementsPage extends React.Component {
     }
 
     fetchMoreData = () => {
-        axios.get(GlobalVariables.backendUrl + "/agreements?page=" + this.state.page, { headers: headers })
+        axios.get(GlobalVariables.backendUrl + "/agreements?page=" + this.state.page + "&search=" + this.state.search, { headers: headers })
             .then(response => {
                 this.setState({
                     agreements: this.state.agreements.concat(response.data.agreements),
@@ -71,17 +73,42 @@ class AgreementsPage extends React.Component {
         }
     }
 
-    checkDownloadLink = (item) => {
+    checkDownloadLink = (e, item) => {
         if (item.pdfUrl === "") {
+            e.preventDefault();
             alert("No docment uploaded!")
         }
     }
 
+    changeSearchField = (search) => {
+        this.setState({ ...this.state, search: search })
+    }
+
     render() {
+        const debounceSearch = debounce(500, value => {
+            if (value !== null) {
+                this.changeSearchField(value);
+                this.setState({
+                    agreements: [],
+                    page: 0,
+                    maxElements: 0
+                })
+                this.fetchMoreData();
+            }
+        });
+
+        const onChangeSearch = (e) => {
+            debounceSearch(e.target.value);
+        };
+
         return (
             <div>
                 <div className="header">
                     <h2>Agreements</h2>
+                    <div className="wrapper">
+                        <img className="search-icon" alt="search" src="search-icon.png" />
+                        <input onChange={e => onChangeSearch(e)} className="search" placeholder="Search" type="text" />
+                    </div>
                 </div>
                 <InfiniteScroll
                     dataLength={this.state.agreements.length}
@@ -102,7 +129,7 @@ class AgreementsPage extends React.Component {
                                     <div className="edit-images">
                                         <Link to="#" onClick={() => this.deleteAgreement(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
                                         <Link to={"/agreement/edit/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
-                                        <a href={item.pdfUrl === "" ? "javascript:void(0)" : item.pdfUrl} onClick={() => this.checkDownloadLink(item)}><img alt="edit" className="edit-button" src="download-icon.png" /></a>
+                                        <a href={item.pdfUrl} onClick={(e) => this.checkDownloadLink(e, item)}><img alt="edit" className="edit-button" src="download-icon.png" /></a>
                                     </div>
                                     <h3><Link className="title-link" to={"/agreement/details/" + item.uid}>{item.title}</Link></h3>
                                     <p>Made on: {this.convertMilisecToDate(item.date)}</p>

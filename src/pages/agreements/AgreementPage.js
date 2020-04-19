@@ -42,7 +42,6 @@ class AgreementPage extends React.Component {
         var date = new Date(e.target.value);
         var milliseconds = date.getTime();
         this.setState({ ...this.state, dateInMilisec: milliseconds });
-        console.log(this.state.dateInMilisec)
     }
 
     convertMilisecToDate = (milisec) => {
@@ -104,7 +103,6 @@ class AgreementPage extends React.Component {
             },
                 error => {
                     this.setState({ ...this.state, error: null })
-                    console.log(error)
                     if (error.response.status === 403) {
                         localStorage.clear();
                         window.location.href = "/login";
@@ -117,6 +115,13 @@ class AgreementPage extends React.Component {
                     }
                 }
             );
+    }
+
+    checkDownloadLink = (e, link) => {
+        if (link === "") {
+            e.preventDefault();
+            alert("No docment uploaded!")
+        }
     }
 
     render() {
@@ -134,7 +139,7 @@ class AgreementPage extends React.Component {
                             <option value={this.state.employerUid}>{this.state.employerFirstName
                                 + " " + this.state.employerLastName}</option>
                         </select><br />
-                        <a className="download-file-link" href={this.state.pdfUrl}>View document</a><br />
+                        <a className="download-file-link" href={this.state.pdfUrl} onClick={(e) => this.checkDownloadLink(e, this.state.pdfUrl)}>View document</a><br />
                         <label>Select file:</label><br />
                         <input className="document-input" id="file" type="file" onChange={e => this.handleFileChange(e)} /><br />
                         <button className="agreement-button" type="submit" onClick={e => this.submitForm(e)}>Save</button>

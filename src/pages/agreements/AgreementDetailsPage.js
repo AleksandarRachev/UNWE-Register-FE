@@ -32,7 +32,6 @@ class AgreementDetailsPage extends React.Component {
         axios.get(GlobalVariables.backendUrl + "/agreements/" + agreementId, { headers: headers })
             .then(response => {
                 this.setState({ agreement: response.data })
-                console.log(response.data)
             })
     }
 
@@ -48,6 +47,13 @@ class AgreementDetailsPage extends React.Component {
         }
     }
 
+    checkDownloadLink = (e, item) => {
+        if (item.pdfUrl === "") {
+            e.preventDefault();
+            alert("No docment uploaded!")
+        }
+    }
+
     render() {
         if (this.state.agreement) {
             return (
@@ -55,7 +61,7 @@ class AgreementDetailsPage extends React.Component {
                     <h1>Agreement details</h1>
                     <Link className="edit-link" to={"/agreement/edit/" + this.state.agreement.uid}>Edit</Link>
                     <Link className="edit-link" to="#" onClick={() => this.deleteAgreement(this.state.agreement.uid)} >Delete</Link>
-                    <a className="edit-link" href={this.state.agreement.pdfUrl}>Download</a>
+                    <a className="edit-link" href={this.state.agreement.pdfUrl} onClick={(e) => this.checkDownloadLink(e, this.state.agreement)}>Download</a>
                     <div className="agreement-details">
                         <h3>ID: {this.state.agreement.uid}</h3>
                         <p>Title: {this.state.agreement.title}</p>
