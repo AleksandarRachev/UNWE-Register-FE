@@ -2,7 +2,7 @@ import GlobalVariables from '../../globalVariables';
 import React from 'react';
 import Error from '../../Error/Error';
 import axios from 'axios';
-import '../../css/LoginPage.css';
+import '../../css/users/LoginPage.css';
 import {
     Link
 } from 'react-router-dom';

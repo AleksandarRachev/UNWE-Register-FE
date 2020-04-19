@@ -1,6 +1,6 @@
 import React from 'react';
 import Error from '../../Error/Error';
-import '../../css/ProfilePage.css';
+import '../../css/users/ProfilePage.css';
 import GlobalVariables from '../../globalVariables';
 import axios from 'axios';
 import EditPassword from '../../components/EditPassword';
@@ -20,7 +20,8 @@ const initialState = {
     lastName: user === null ? null : user.lastName,
     phone: user === null ? null : user.phone,
     address: user === null ? null : user.address,
-    contactPerson: user === null ? null : user.contactPerson
+    contactPerson: user === null ? null : user.contactPerson,
+    companyName: user === null ? null : user.companyName
 }
 
 class ProfilePage extends React.Component {
@@ -41,6 +42,7 @@ class ProfilePage extends React.Component {
         data.set('phone', this.state.phone);
         data.set('address', this.state.address);
         data.set('contactPerson', this.state.contactPerson);
+        data.set('companyName', this.state.companyName)
         this.setState({ ...this.state, data: data });
 
         axios.put(GlobalVariables.backendUrl + "/users", data, { headers: headers })
@@ -51,7 +53,8 @@ class ProfilePage extends React.Component {
                     lastName: response.data.lastName,
                     address: response.data.address,
                     contactPerson: response.data.contactPerson,
-                    imageUrl: response.data.imageUrl
+                    imageUrl: response.data.imageUrl,
+                    companyName: response.data.companyName
                 })
 
                 user.email = this.state.email;
@@ -60,6 +63,7 @@ class ProfilePage extends React.Component {
                 user.address = this.state.address;
                 user.contactPerson = this.state.contactPerson;
                 user.imageUrl = this.state.imagePreviewUrl
+                user.companyName = this.state.companyName
                 localStorage.setItem("user", JSON.stringify(user))
                 alert("Profile updated!");
                 window.location.reload();
@@ -129,6 +133,17 @@ class ProfilePage extends React.Component {
         this.setState({ ...this.state, contactPerson: contactPerson === "null" ? null : contactPerson });
     }
 
+    handleCompaanyNameChange = (e) => {
+        var companyName = e.target.value;
+        this.setState({ ...this.state, companyName: companyName === "null" ? null : companyName });
+    }
+
+    renderCompanyInput = () => {
+        if(user.role === "EMPLOYER"){
+            return <input className="field-input" value={this.state.companyName} placeholder="Company name" onChange={e => this.handleCompaanyNameChange(e)} />
+        }
+    }
+
     render() {
         let imagePreview = this.state.imagePreviewUrl;
         if (this.state.imagePreviewUrl) {
@@ -150,6 +165,7 @@ class ProfilePage extends React.Component {
                         <input className="field-input" value={this.state.phone} placeholder="* Phone" onChange={e => this.handlePhoneChange(e)} />
                         <input className="field-input" value={this.state.address} placeholder="Address" onChange={e => this.handleAddressChange(e)} />
                         <input className="field-input" value={this.state.contactPerson} placeholder="Contact person" onChange={e => this.handleContactPersonChange(e)} />
+                        {this.renderCompanyInput()}
                         <button className="submit-edit-button" type="submit" onClick={e => this.submitPersonalInfoEdit(e)}>Edit profle</button>
                     </form>
                 </div>

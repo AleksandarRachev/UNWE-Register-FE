@@ -63,7 +63,7 @@ class HomePage extends React.Component {
     }
 
     renderIcons = (item) => {
-        if (user && user.role === "EMPLOYER") {
+        if (user && user.role === "EMPLOYER" && user.companyName === item.companyName) {
             return <div className="edit-images">
                 <Link to="#" onClick={() => this.deleteEvent(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
                 <Link to={"/edit-event/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
@@ -125,6 +125,7 @@ class HomePage extends React.Component {
                                             <p>{item.description}</p>
                                             <img alt="event" className="fakeimg" src={item.imageUrl === null ? "text-pic.jpg" : item.imageUrl} />
                                         </div>
+                                        <p className="company">By: {item.companyName}</p>
                                     </div>
                                 </div>
                             </div>
@@ -139,6 +140,7 @@ class HomePage extends React.Component {
                                             <img alt="event" className="fakeimg" src={item.imageUrl === null ? "text-pic.jpg" : item.imageUrl} />
                                             <p>{item.description}</p>
                                         </div>
+                                        <p className="company">By: {item.companyName}</p>
                                     </div>
                                 </div>
                             </div>

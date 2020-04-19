@@ -1,6 +1,6 @@
 import GlobalVariables from '../../globalVariables';
 import React from 'react';
-import '../../css/RegisterPage.css';
+import '../../css/users/RegisterPage.css';
 import Error from '../../Error/Error';
 import axios from 'axios';
 import {
