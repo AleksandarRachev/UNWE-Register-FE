@@ -1,6 +1,6 @@
 .agreement-info {
     text-align: right;
-    font-size: 10px;
+    font-size: calc(1vmin + 2px);
 }
 
 .edit-button {

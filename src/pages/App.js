@@ -61,8 +61,11 @@ class App extends React.Component {
     }
     else {
       return (
-        <li key="profile" className="dropdown profile">
-          <Link to="#" className="dropbtn">Profile</Link>
+        <li className="dropdown profile">
+          <div>
+            {user.imageUrl && <img src={user.imageUrl} />}
+            <Link to="#" className="drop-profile">{user.firstName + " " + user.lastName}</Link>
+          </div>
           <div className="dropdown-content">
             <Link to="/profile" onClick={this.scrollToTop.bind(this)}>Profile</Link>
             <Link to="/home" onClick={this.logout.bind(this)}>Logout</Link>
@@ -118,7 +121,7 @@ class App extends React.Component {
       <Router>
         <div className="navbar">
           <ul>
-            <li key="image"><img alt="logo" className="logo" src="unwe-logo3.png" /></li>
+            <li key="image"><Link to="/home" className="logo-link"><img alt="logo" className="logo" src="unwe-logo3.png" /></Link></li>
             <li key="home"><Link to="/home" onClick={this.scrollToTop.bind(this)}>Home</Link></li>
             {this.renderIfLogged()}
             {this.renderProfile()}

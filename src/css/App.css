@@ -60,7 +60,9 @@ li.dropdown {
   text-align: left;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
 
 .dropdown:hover .dropdown-content {
   display: block;
@@ -68,4 +70,27 @@ li.dropdown {
 
 .profile {
   float: right;
+}
+
+.dropdown img {
+  width: 30px;
+  height: 30px;
+  float: left;
+  padding: 10px;
+  border-radius: 30px;
+}
+
+.drop-profile {
+  padding: 19px 16px 19px 0;
+}
+
+li.dropdown:hover{
+  background-color: red;
+}
+.logo-link{
+  padding: 0;
+}
+
+.logo-link:hover {
+  background-color: #760e26;
 }
