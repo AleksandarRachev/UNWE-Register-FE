@@ -3,16 +3,16 @@
     font-size: calc(1vmin + 2px);
 }
 
-.edit-button {
-    width: calc(6px + 1%);
+.img-button {
+    width: calc(2vmin + 1px);
     float: right;
-    padding: 1.5% 1% 0% 1%
+    padding: 1.5% 1%
 }
 
-.delete-button {
-    width: calc(6px + 1%);
-    float: right;
-    padding: 1.5% 1% 0% 1%
+.img-button:hover {
+    background-color: rgb(156, 156, 156);
+    border-radius: 20px;
+    padding: 1%;
 }
 
 h4 {

@@ -65,8 +65,8 @@ class HomePage extends React.Component {
     renderIcons = (item) => {
         if (user && user.role === "EMPLOYER" && user.companyName === item.companyName) {
             return <div className="edit-images">
-                <Link to="#" onClick={() => this.deleteEvent(item.uid)} ><img alt="delete" className="delete-button" src="trash-can.png" /></Link>
-                <Link to={"/edit-event/" + item.uid}><img alt="edit" className="edit-button" src="pencil-edit-button.png" /></Link>
+                <Link to="#" onClick={() => this.deleteEvent(item.uid)} ><img alt="delete" className="img-button" src="trash-can.png" /></Link>
+                <Link to={"/edit-event/" + item.uid}><img alt="edit" className="img-button" src="pencil-edit-button.png" /></Link>
             </div>;
         }
     }
