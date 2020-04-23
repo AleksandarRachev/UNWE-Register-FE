@@ -3,19 +3,13 @@ import './Chat.css';
 
 const AppConfig = {
     PROTOCOL: "ws:",
-    HOST: "//192.168.0.106",
+    HOST: "//localhost",
     PORT: ":9000"
 }
 
 const socket = new WebSocket(AppConfig.PROTOCOL + AppConfig.HOST + AppConfig.PORT);
 
 const loggedUser = JSON.parse(localStorage.getItem("user"));
-
-const loggedUserMessage = {
-    backgroundColor: "#009aff",
-    textAlign: "right",
-    margin: "1% 3% 1% 25%"
-}
 
 class Chat extends React.Component {
     state = {
@@ -109,10 +103,18 @@ class Chat extends React.Component {
                         <div className="chat">
                             {this.state.messages && this.state.messages.map((item, i) => {
                                 if (item.connectedUserId === loggedUser.uid) {
-                                    return <p style={loggedUserMessage} className="chat-message" key={i}>{item.message}</p>
+                                    return (
+                                        <p className="logged-user-message-wrapper">
+                                            <span className="logged-user-message" key={i}>{item.message}</span>
+                                        </p>
+                                    );
                                 }
                                 else {
-                                    return <p className="chat-message" key={i}>{item.userName + ": " + item.message}</p>
+                                    return (
+                                        <p>
+                                            <span className="chat-message" key={i}>{item.userName + ": " + item.message}</span>
+                                        </p>
+                                    );
                                 }
                             })}
                         </div>
