@@ -13,6 +13,7 @@ import AgreementDetailsPage from './agreements/AgreementDetailsPage';
 import AddEventPage from './events/AddEventPage';
 import EditActivityPlanPage from './activityPlans/EditActivityPlanPage';
 import EditEventPage from './events/EditEventPage';
+import Chat from '../chat/Chat';
 import axios from 'axios';
 import GlobalVariables from '../globalVariables';
 import {
@@ -141,6 +142,7 @@ class App extends React.Component {
           <Route path="/agreement/details/**"><AgreementDetailsPage /></Route>
           <Route path="/add-event"><AddEventPage /></Route>
           <Route path="/edit-event"><EditEventPage /></Route>
+          <Route path="/chat"><Chat /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>
