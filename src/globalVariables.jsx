@@ -1,5 +1,5 @@
 class GlobalVariables {
-    backendUrl = "http://localhost:8070";
+    backendUrl = "http://192.168.0.106:8070";
 }
 
 export default (new GlobalVariables());

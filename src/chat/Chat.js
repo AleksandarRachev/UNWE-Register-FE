@@ -3,7 +3,7 @@ import './Chat.css';
 
 const AppConfig = {
     PROTOCOL: "ws:",
-    HOST: "//localhost",
+    HOST: "//192.168.0.106",
     PORT: ":9000"
 }
 
@@ -11,39 +11,49 @@ const socket = new WebSocket(AppConfig.PROTOCOL + AppConfig.HOST + AppConfig.POR
 
 const loggedUser = JSON.parse(localStorage.getItem("user"));
 
+const loggedUserMessage = {
+    backgroundColor: "#009aff",
+    textAlign: "right",
+    margin: "1% 3% 1% 25%"
+}
+
 class Chat extends React.Component {
     state = {
         input: "",
         messages: [],
-        user: null,
-        username: null,
+        userId: null,
+        connectedUserId: null,
+        userName: null,
         room: null,
         roomName: null
     }
 
-    setUserName = () => {
+    setTempUserName = () => {
         if (!loggedUser) {
             window.location.href = "/login"
         }
-        this.setState({ ...this.state, username: loggedUser.firstName + " " + loggedUser.lastName })
+        this.setState({ ...this.state, userId: loggedUser.uid })
     }
 
     componentDidMount() {
 
-        this.setUserName();
+        this.setTempUserName();
 
         socket.onmessage = (message) => {
             let data = JSON.parse(message.data);
-            console.log(data)
             switch (data.type) {
                 case "TEXT_MESSAGE": {
                     this.setState({
                         ...this.state, messages: [{
-                            user: data.user.name,
+                            connectedUserId: data.user.id,
+                            userName: data.user.name,
                             message: data.data,
                             room: data.room
                         }].concat(this.state.messages)
                     })
+                } break;
+                case "USER_JOINED": {
+                    this.setState({ ...this.state, userName: data.user.name })
                 } break;
                 default: this.setState({ ...this.state, room: data.room })
             }
@@ -52,7 +62,7 @@ class Chat extends React.Component {
 
     sendMessage = () => {
         let message = JSON.stringify({
-            user: this.state.user,
+            user: { id: this.state.userId, name: loggedUser.firstName + " " + loggedUser.lastName },
             data: this.state.message,
             type: "TEXT_MESSAGE",
             room: this.state.room
@@ -66,19 +76,19 @@ class Chat extends React.Component {
         this.setState({ ...this.state, message: e.target.value })
     }
 
-    handleUserName = (e) => {
-        this.setState({ ...this.state, username: e.target.value })
+    handleTempUserName = (e) => {
+        this.setState({ ...this.state, userId: e.target.value })
     }
 
     connectUser = () => {
         let message = JSON.stringify({
-            user: this.state.username,
+            user: { id: this.state.userId },
             data: null,
             type: "USER_JOINED",
             room: this.state.room
         });
         socket.send(message);
-        this.setState({ ...this.state, user: this.state.username })
+        this.setState({ ...this.state, connectedUserId: this.state.userId })
     }
 
     handleRoomName = (e) => {
@@ -92,13 +102,18 @@ class Chat extends React.Component {
 
     render() {
         if (this.state.room) {
-            if (this.state.user) {
+            if (this.state.connectedUserId) {
                 return (
                     <div className="chat-header">
                         <h1 className="room">Room: {this.state.room}</h1>
                         <div className="chat">
                             {this.state.messages && this.state.messages.map((item, i) => {
-                                return <p className="chat-message" key={i}>{item.user + ": " + item.message}</p>
+                                if (item.connectedUserId === loggedUser.uid) {
+                                    return <p style={loggedUserMessage} className="chat-message" key={i}>{item.message}</p>
+                                }
+                                else {
+                                    return <p className="chat-message" key={i}>{item.userName + ": " + item.message}</p>
+                                }
                             })}
                         </div>
                         <form className="chat-form" onSubmit={e => { e.preventDefault(); this.sendMessage() }}>
