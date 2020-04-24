@@ -109,7 +109,6 @@ class Chat extends React.Component {
             if (this.state.connectedUserId) {
                 return (
                     <div className="chat-header">
-                        <h1 className="room">Room: {this.state.room}</h1>
                         <div className="chat">
                             {this.state.messages && this.state.messages.map((item, i) => {
                                 if (item.connectedUserId === loggedUser.uid) {
