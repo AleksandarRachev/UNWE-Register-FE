@@ -91,6 +91,7 @@
     border-radius: 15px;
     border: 1px solid black;
     padding: 1% 2%;
+    font-size: 16px;
 }
   
 .start-input:focus {

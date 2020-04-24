@@ -3,19 +3,6 @@
     display: flex;
 }
 
-.group-chat-input {
-    width: 85%;
-    height: 30px;
-    border-radius: 15px;
-    border: 1px solid black;
-    padding: 1% 2%;
-    font-size: 16px;
-}
-
-.group-chat-input:focus {
-    outline: none;
-}
-
 .group-chat-button {
     text-decoration: none;
     padding: 2% 5%;

@@ -141,7 +141,7 @@ class Chat extends React.Component {
                 return (
                     <div className="header">
                         <div className="room-info">
-                            <h1>You are connecting to room: {this.state.room}</h1>
+                            <h1>You are connecting: {this.state.room}</h1>
                             <button className="start-button" onClick={() => this.connectUser()}>Enter</button>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ class Chat extends React.Component {
             return (
                 <div className="header">
                     <form className="start" onSubmit={e => e.preventDefault()}>
-                        <input className="start-input" id="room-name" placeholder="Enter room name" onChange={(e) => this.handleRoomName(e)} />
+                        <input className="start-input" id="room-name" placeholder="Enter group chat name" onChange={(e) => this.handleRoomName(e)} />
                         <button className="start-button" onClick={() => this.createRoom()}>Create/Join</button>
                     </form>
                 </div>

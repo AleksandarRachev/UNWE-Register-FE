@@ -17,7 +17,7 @@ class GroupChatPage extends React.Component {
         return (
             <div className="header">
                 <div className="group-chat">
-                    <input className="group-chat-input" placeholder="Enter group chat name" onChange={(e) => this.handleGroupUrlChange(e)} />
+                    <input className="start-input" placeholder="Enter group chat name" onChange={(e) => this.handleGroupUrlChange(e)} />
                     <Link to={"/chat/message/" + this.state.groupUrl} className="group-chat-button">Create/Join</Link>
                 </div>
             </div>
