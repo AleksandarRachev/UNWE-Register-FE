@@ -14,6 +14,8 @@ import AgreementDetailsPage from './agreements/AgreementDetailsPage';
 import AddEventPage from './events/AddEventPage';
 import EditActivityPlanPage from './activityPlans/EditActivityPlanPage';
 import EditEventPage from './events/EditEventPage';
+import PrivateChatPage from '../pages/chats/PrivateChatPage';
+import GroupChatPage from '../pages/chats/GroupChatPage';
 import Chat from '../chat/Chat';
 import axios from 'axios';
 import GlobalVariables from '../globalVariables';
@@ -111,8 +113,8 @@ class App extends React.Component {
           <li key="chat" className="dropdown">
             <Link to="#" className="dropbtn">Chat</Link>
             <div className="dropdown-content">
-              <Link to="/chat/qwe">Group chat</Link>
-              <Link to="/chat/asd">Private chat</Link>
+              <a href="/chat/group">Group chat</a>
+              <a href="/chat/private">Private chat</a>
             </div>
           </li>
         </div>
@@ -150,7 +152,9 @@ class App extends React.Component {
           <Route path="/agreement/details/**"><AgreementDetailsPage /></Route>
           <Route path="/add-event"><AddEventPage /></Route>
           <Route path="/edit-event"><EditEventPage /></Route>
-          <Route path="/chat/**"><Chat /></Route>
+          <Route path="/chat/private"><PrivateChatPage /></Route>
+          <Route path="/chat/group"><GroupChatPage/></Route>
+          <Route path="/chat/message**"><Chat /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>

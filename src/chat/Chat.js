@@ -13,6 +13,7 @@ const socket = new WebSocket(AppConfig.PROTOCOL + AppConfig.HOST + AppConfig.POR
 const loggedUser = JSON.parse(localStorage.getItem("user"));
 
 class Chat extends React.Component {
+
     state = {
         input: "",
         messages: [],
@@ -28,17 +29,20 @@ class Chat extends React.Component {
             window.location.href = "/login"
         }
         else {
-            this.setState({ ...this.state, userId: loggedUser.uid })
+            this.setState({ userId: loggedUser.uid })
         }
+    }
+
+    setRoom = () => {
+        let chatRoom = window.location.pathname.split("/chat/message/")[1];
+        this.setState({ ...this.state, room: chatRoom })
     }
 
     componentDidMount() {
 
+        this.setRoom()
         this.setTempUserName();
 
-        let chatRoom = window.location.pathname.split("/chat/")[1];
-
-        this.setState({ room: chatRoom })
 
         socket.onmessage = (message) => {
             let data = JSON.parse(message.data);
@@ -62,23 +66,21 @@ class Chat extends React.Component {
     }
 
     sendMessage = () => {
-        let message = JSON.stringify({
-            user: { id: this.state.userId, name: loggedUser.firstName + " " + loggedUser.lastName },
-            data: this.state.message,
-            type: "TEXT_MESSAGE",
-            room: this.state.room
-        });
-        socket.send(message);
-        this.setState({ message: '' })
-        document.getElementById("input").value = "";
+        if (this.state.message) {
+            let message = JSON.stringify({
+                user: { id: this.state.userId, name: loggedUser.firstName + " " + loggedUser.lastName },
+                data: this.state.message,
+                type: "TEXT_MESSAGE",
+                room: this.state.room
+            });
+            socket.send(message);
+            this.setState({ message: '' })
+            document.getElementById("input").value = "";
+        }
     }
 
     handleMessage = (e) => {
         this.setState({ ...this.state, message: e.target.value })
-    }
-
-    handleTempUserName = (e) => {
-        this.setState({ ...this.state, userId: e.target.value })
     }
 
     connectUser = () => {
@@ -93,6 +95,7 @@ class Chat extends React.Component {
     }
 
     handleRoomName = (e) => {
+        e.target.value = e.target.value.replace(" ", "");
         this.setState({ ...this.state, roomName: e.target.value });
     }
 
@@ -118,7 +121,7 @@ class Chat extends React.Component {
                                 }
                                 else {
                                     return (
-                                        <p key={i} className="message-wraper">
+                                        <p key={i} className="message-wrapper">
                                             <span className="chat-message" >{item.userName + ": " + item.message}</span>
                                         </p>
                                     );
@@ -137,8 +140,8 @@ class Chat extends React.Component {
             else {
                 return (
                     <div className="header">
-                        <div className="start" onSubmit={e => e.preventDefault()}>
-                            <h2>You are connecting to room: {this.state.room}</h2>
+                        <div className="room-info">
+                            <h1>You are connecting to room: {this.state.room}</h1>
                             <button className="start-button" onClick={() => this.connectUser()}>Enter</button>
                         </div>
                     </div>
