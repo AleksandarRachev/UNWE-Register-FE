@@ -111,9 +111,14 @@
     display: inline-block;
     border-radius: 15px;
     font-family: cursive;
-    padding: 2% 5%;
+    padding: 1% 3%;
 }
 
 .logged-user-message-wrapper {
     text-align: right;
+    margin: 0;
+}
+
+.message-wrapper {
+    margin: 0;
 }

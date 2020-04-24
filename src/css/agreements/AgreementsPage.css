@@ -6,7 +6,7 @@
 .img-button {
     width: calc(2vmin + 1px);
     float: right;
-    padding: 1.5% 1%
+    padding: 1%
 }
 
 .img-button:hover {

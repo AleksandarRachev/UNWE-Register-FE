@@ -1,5 +1,6 @@
 import React from "react";
 import './Chat.css';
+import sendMessagePic from './images/send-message.png';
 
 const AppConfig = {
     PROTOCOL: "ws:",
@@ -26,17 +27,23 @@ class Chat extends React.Component {
         if (!loggedUser) {
             window.location.href = "/login"
         }
-        this.setState({ ...this.state, userId: loggedUser.uid })
+        else {
+            this.setState({ ...this.state, userId: loggedUser.uid })
+        }
     }
 
     componentDidMount() {
 
         this.setTempUserName();
 
+        let chatRoom = window.location.pathname.split("/chat/")[1];
+
+        this.setState({ room: chatRoom })
+
         socket.onmessage = (message) => {
             let data = JSON.parse(message.data);
             switch (data.type) {
-                case "TEXT_MESSAGE": {
+                case "TEXT_MESSAGE":
                     this.setState({
                         ...this.state, messages: [{
                             connectedUserId: data.user.id,
@@ -45,10 +52,10 @@ class Chat extends React.Component {
                             room: data.room
                         }].concat(this.state.messages)
                     })
-                } break;
-                case "USER_JOINED": {
+                    break;
+                case "USER_JOINED":
                     this.setState({ ...this.state, userName: data.user.name })
-                } break;
+                    break;
                 default: this.setState({ ...this.state, room: data.room })
             }
         }
@@ -104,15 +111,15 @@ class Chat extends React.Component {
                             {this.state.messages && this.state.messages.map((item, i) => {
                                 if (item.connectedUserId === loggedUser.uid) {
                                     return (
-                                        <p className="logged-user-message-wrapper">
-                                            <span className="logged-user-message" key={i}>{item.message}</span>
+                                        <p key={i} className="logged-user-message-wrapper">
+                                            <span className="logged-user-message" >{item.message}</span>
                                         </p>
                                     );
                                 }
                                 else {
                                     return (
-                                        <p>
-                                            <span className="chat-message" key={i}>{item.userName + ": " + item.message}</span>
+                                        <p key={i} className="message-wraper">
+                                            <span className="chat-message" >{item.userName + ": " + item.message}</span>
                                         </p>
                                     );
                                 }
@@ -120,7 +127,9 @@ class Chat extends React.Component {
                         </div>
                         <form className="chat-form" onSubmit={e => { e.preventDefault(); this.sendMessage() }}>
                             <input className="chat-form-input" id="input" onChange={(e) => this.handleMessage(e)} />
-                            <a onClick={() => this.sendMessage()}><img className="icon-submit" src="send-message.png" /></a>
+                            <a href="." onClick={(e) => { this.sendMessage(); e.preventDefault() }}>
+                                <img alt="send" className="icon-submit" src={sendMessagePic} />
+                            </a>
                         </form>
                     </div>
                 );

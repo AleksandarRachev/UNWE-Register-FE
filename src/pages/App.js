@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/App.css';
+import logoPic from '../images/unwe-logo3.png';
 import HomePage from './events/HomePage';
 import AgreementsPage from './agreements/AgreementsPage';
 import LoginPage from './user/LoginPage';
@@ -64,7 +65,7 @@ class App extends React.Component {
       return (
         <li className="dropdown profile">
           <div>
-            {user.imageUrl && <img src={user.imageUrl} />}
+            {user.imageUrl && <img alt="user" src={user.imageUrl} />}
             <Link to="#" className="drop-profile">{user.firstName + " " + user.lastName}</Link>
           </div>
           <div className="dropdown-content">
@@ -107,6 +108,13 @@ class App extends React.Component {
               {this.renderAddLinks()}
             </div>
           </li>
+          <li key="chat" className="dropdown">
+            <Link to="#" className="dropbtn">Chat</Link>
+            <div className="dropdown-content">
+              <Link to="/chat/qwe">Group chat</Link>
+              <Link to="/chat/asd">Private chat</Link>
+            </div>
+          </li>
         </div>
       );
     }
@@ -122,7 +130,7 @@ class App extends React.Component {
       <Router>
         <div className="navbar">
           <ul>
-            <li key="image"><Link to="/home" className="logo-link"><img alt="logo" className="logo" src="unwe-logo3.png" /></Link></li>
+            <li key="image"><Link to="/home" className="logo-link"><img alt="logo" className="logo" src={logoPic} /></Link></li>
             <li key="home"><Link to="/home" onClick={this.scrollToTop.bind(this)}>Home</Link></li>
             {this.renderIfLogged()}
             {this.renderProfile()}
@@ -142,7 +150,7 @@ class App extends React.Component {
           <Route path="/agreement/details/**"><AgreementDetailsPage /></Route>
           <Route path="/add-event"><AddEventPage /></Route>
           <Route path="/edit-event"><EditEventPage /></Route>
-          <Route path="/chat"><Chat /></Route>
+          <Route path="/chat/**"><Chat /></Route>
           <Redirect from="/" to="/home"></Redirect>
         </Switch>
       </Router>
