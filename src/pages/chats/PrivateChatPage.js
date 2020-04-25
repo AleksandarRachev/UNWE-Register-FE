@@ -3,7 +3,12 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GlobalVariables from '../../globalVariables';
 import Error from '../../Error/Error';
-import '../../css/chats/PrivateChatPage.css'
+import '../../css/chats/PrivateChatPage.css';
+import Popup from "reactjs-popup";
+import address from './images/address.png';
+import phone from './images/phone.png';
+import email from './images/email.png';
+import company from './images/company.png';
 
 const headers = {
     'Authorization': 'Bearer ' + (localStorage.getItem("token") !== null ? localStorage.getItem("token") : "")
@@ -15,7 +20,8 @@ class PrivateChatPage extends React.Component {
 
     state = {
         chats: [],
-        users: []
+        users: [],
+        user: null
     }
 
     componentDidMount() {
@@ -65,16 +71,67 @@ class PrivateChatPage extends React.Component {
                 })
     }
 
+    getUserDetails = (userId) => {
+        axios.get(GlobalVariables.backendUrl + "/users/" + userId + "/details", {})
+            .then(response => {
+                this.setState({ ...this.state, user: response.data })
+            })
+    }
+
     render() {
         return (
             <div className="header">
                 {this.state.error && <Error message={this.state.error} />}
                 <div className="private-chat-layout">
-                    <div className="private-chat-users-unconnected">
+                    <div className="private-unconnected-users">
                         <h1>Select user to connect with</h1>
                         {this.state.users && this.state.users.map((item, i) => {
-                            return <div key={i}>
-                                <p className="private-chat-user-unconnected">{item.firstName + " " + item.lastName}</p>
+                            return <div className="user-row" key={i}>
+                                {item.imageUrl ?
+                                    <img alt="chat" className="chat-pic" src={item.imageUrl} />
+                                    :
+                                    <img alt="chat" className="chat-pic" src="/default-profile.png" />}
+
+                                <Popup
+                                    trigger={<p className="private-unconnected-user">{item.firstName + " " + item.lastName}</p>}
+                                    modal
+                                    on="click"
+                                    onOpen={() => this.getUserDetails(item.uid)}
+                                    closeOnDocumentClick
+                                    onClose={() => { this.setState({ ...this.state, user: null }) }}
+                                >
+                                    <span className="popup-content">
+                                        {this.state.user ?
+                                            <div className="popup-details">
+
+                                                {this.state.user.imageUrl ?
+                                                    <img alt="profile" className="details-pic" src={this.state.user.imageUrl} />
+                                                    :
+                                                    <img alt="profile" className="details-pic" src="/default-profile.png" />}
+                                                <h1>{this.state.user.firstName + " " + this.state.user.lastName}</h1>
+                                                <div className="details-info">
+                                                    <img alt="info" className="details-info-pic" src={email} />
+                                                    <p>{this.state.user.email}</p>
+                                                </div>
+                                                {this.state.user.address &&
+                                                    <div className="details-info">
+                                                        <img alt="info" className="details-info-pic" src={address} />
+                                                        <p>{this.state.user.address}</p>
+                                                    </div>}
+                                                <div className="details-info">
+                                                    <img alt="info" className="details-info-pic" src={phone} />
+                                                    <p>{this.state.user.phone}</p>
+                                                </div>
+
+                                                {this.state.user.companyName &&
+                                                    <div className="details-info">
+                                                        <img alt="info" className="details-info-pic" src={company} />
+                                                        <p>{this.state.user.companyName}</p>
+                                                    </div>}
+                                            </div> :
+                                            ""}
+                                    </span>
+                                </Popup>
                                 <button className="connect-button" onClick={() => this.createChat(item.uid)}>+</button>
                             </div>
                         })}
@@ -85,12 +142,22 @@ class PrivateChatPage extends React.Component {
                             if (item.uid !== user.uid) {
                                 if (user.role === "COORDINATOR") {
                                     return <div className="private-chat-user" key={i}>
-                                        <Link to={"/chat/message/" + item.uid}>{item.employerFirstName + " " + item.employerLastName}</Link>
+                                        {item.employerImageUrl ?
+                                            <img alt="chat" className="chat-pic" src={item.employerImageUrl} />
+                                            :
+                                            <img alt="chat" className="chat-pic" src="/default-profile.png" />}
+                                        <Link to={"/chat/message/" + item.uid}>{item.employerFirstName + " " + item.employerLastName +
+                                            (item.company ? " - " + item.company : "")}</Link>
                                     </div>
                                 }
                                 else {
                                     return <div className="private-chat-user" key={i}>
-                                        <Link to={"/chat/message/" + item.uid}>{item.coordinatorFirstName + " " + item.coordinatorLastName}</Link>
+                                        {item.coordinatorImageUrl ?
+                                            <img alt="chat" className="chat-pic" src={item.coordinatorImageUrl} />
+                                            :
+                                            <img alt="chat" className="chat-pic" src="/default-profile.png" />}
+
+                                        <p><Link to={"/chat/message/" + item.uid}>{item.coordinatorFirstName + " " + item.coordinatorLastName}</Link>{(item.company ? " - " + item.company : "")}</p>
                                     </div>
                                 }
                             }
