@@ -19,7 +19,8 @@ class ActivityPlansPage extends React.Component {
         activityPlans: [],
         maxActivityPlans: 0,
         page: 0,
-        search: ""
+        search: "",
+        sort: ""
     }
 
     componentDidMount() {
@@ -36,7 +37,8 @@ class ActivityPlansPage extends React.Component {
             activityUrl = "/activityPlans/user?page=";
         }
 
-        axios.get(GlobalVariables.backendUrl + activityUrl + this.state.page + "&search=" + this.state.search, { headers: headers })
+        axios.get(GlobalVariables.backendUrl + activityUrl + this.state.page + "&search=" + this.state.search + 
+        (this.state.sort && "&sort=" + this.state.sort), { headers: headers })
             .then(response => {
                 this.setState({
                     activityPlans: this.state.activityPlans.concat(response.data.activityPlans),
@@ -89,6 +91,10 @@ class ActivityPlansPage extends React.Component {
         this.setState({ ...this.state, search: search })
     }
 
+    handleSortChange = (sort) => {
+        this.setState({ ...this.state, sort: sort })
+    }
+
     render() {
         const debounceSearch = debounce(500, value => {
             if (value !== null) {
@@ -106,12 +112,34 @@ class ActivityPlansPage extends React.Component {
             debounceSearch(e.target.value);
         };
 
+        const debounceSort = debounce(0, value => {
+            if (value !== null) {
+                this.handleSortChange(value);
+                this.setState({
+                    activityPlans: [],
+                    page: 0,
+                    maxElements: 0
+                })
+                this.fetchMoreData();
+            }
+        });
+
+        const onChangeSort = (e) => {
+            debounceSort(e.target.value)
+        }
+
         return (
             <div className="header">
                 <h2>Activity plans</h2>
-                <div className="wrapper">
-                    <img className="search-icon" alt="search" src="search-icon.png" />
-                    <input onChange={e => onChangeSearch(e)} className="search" placeholder="Search" type="text" />
+                <div className="filter">
+                    <div className="wrapper">
+                        <img className="search-icon" alt="search" src="search-icon.png" />
+                        <input onChange={e => onChangeSearch(e)} className="search" placeholder="Search" type="text" />
+                    </div>
+                    <select className="employer-select" onChange={(e) => onChangeSort(e)}>
+                        <option value="DESC">Date new -> old</option>
+                        <option value="ASC">Date old -> new</option>
+                    </select>
                 </div>
                 <InfiniteScroll
                     dataLength={this.state.activityPlans.length}
