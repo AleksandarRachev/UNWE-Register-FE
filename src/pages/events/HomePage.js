@@ -19,7 +19,8 @@ class HomePage extends React.Component {
         events: [],
         maxElements: 0,
         page: 0,
-        search: ""
+        search: "",
+        sort: ""
     }
 
     componentDidMount() {
@@ -28,7 +29,8 @@ class HomePage extends React.Component {
     }
 
     fetchMoreData = () => {
-        axios.get(GlobalVariables.backendUrl + "/events?page=" + this.state.page + "&search=" + this.state.search, {})
+        axios.get(GlobalVariables.backendUrl + "/events?page=" + this.state.page + "&search=" + this.state.search +
+            (this.state.sort && "&sort=" + this.state.sort), {})
             .then(response => {
                 this.setState({
                     events: this.state.events.concat(response.data.events),
@@ -75,6 +77,10 @@ class HomePage extends React.Component {
         this.setState({ ...this.state, search: search })
     }
 
+    handleSortChange = (sort) => {
+        this.setState({ ...this.state, sort: sort })
+    }
+
     render() {
         const debounceSearch = debounce(500, value => {
             if (value !== null) {
@@ -92,13 +98,35 @@ class HomePage extends React.Component {
             debounceSearch(e.target.value);
         };
 
+        const debounceSort = debounce(0, value => {
+            if (value !== null) {
+                this.handleSortChange(value);
+                this.setState({
+                    events: [],
+                    page: 0,
+                    maxElements: 0
+                })
+                this.fetchMoreData();
+            }
+        });
+
+        const onChangeSort = (e) => {
+            debounceSort(e.target.value)
+        }
+
         return (
             <div>
                 <div className="header">
                     <h2>Events</h2>
-                    <div className="wrapper">
-                        <img className="search-icon" alt="search" src="search-icon.png" />
-                        <input onChange={e => onChangeSearch(e)} className="search" placeholder="Search" type="text" />
+                    <div className="filter">
+                        <div className="wrapper">
+                            <img className="search-icon" alt="search" src="search-icon.png" />
+                            <input onChange={e => onChangeSearch(e)} className="search" placeholder="Search" type="text" />
+                        </div>
+                        <select className="employer-select" onChange={(e) => onChangeSort(e)}>
+                            <option value="DESC">Date new -> old</option>
+                            <option value="ASC">Date old -> new</option>
+                        </select>
                     </div>
                 </div>
                 <InfiniteScroll

@@ -1,0 +1,132 @@
+.private-chat-users {
+    text-align: center;
+    padding: 3%;
+    margin: 0 9%;
+    background-color: #85858587;
+    border-radius: 10px;
+    width: 30%;
+    float: right;
+}
+
+.private-unconnected-users {
+    text-align: center;
+    background-color: #85858587;
+    border-radius: 10px;
+    float: left;
+    width: 30%;
+    margin: 0 6%;
+}
+
+.private-chat-user{
+    padding: 2% 5%;
+    font-size: calc(2vmin + 5px);
+    font-family: fantasy;
+    border: 1px solid black;
+    border-radius: 40px;
+    margin: 3% 0;
+    text-align: left;
+}
+
+.private-unconnected-user{
+    padding: 2% 4%;
+    font-size: calc(2vmin + 5px);
+    font-family: fantasy;
+    display: inline;
+}
+
+.private-unconnected-user:hover {
+    cursor: pointer;
+}
+
+.private-chat-users a{
+    text-decoration: none;
+    color: black;
+}
+
+.private-chat-users a:hover {
+    color:blue;
+}
+
+.private-chat-title {
+    text-align: center;
+    margin: 0;
+}
+
+.private-chat-layout{
+    margin-top: calc(5vmin + 30px);
+    overflow: hidden;
+}
+
+.connect-button{
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 0.5% 1.5%;
+    background-color: white;
+    margin: 2%;
+    font-weight: 900;
+}
+
+.connect-button:hover{
+    cursor: pointer;
+    background-color: #bcbcbc;
+}
+
+.chat-pic {
+    width: calc(4vmin + 5px);
+    height: calc(4vmin + 5px);
+    border-radius: 20px;
+    margin:0 10px 0 0;
+}
+
+.user-row{
+    border-radius: 40px;
+    border: 1px solid black;
+    text-align: left;
+    padding: 2% 2% 2% 15%;
+    margin: 4%;
+}
+
+.popup-content {
+    height: calc(35vmin + 20px);
+    overflow: auto;
+    height: 60%;
+    border-radius: 20px;
+}
+
+.popup-content::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    border-radius: 15px 0 0 15px;
+}
+
+.popup-content::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 15px 0 0 15px;
+}
+
+.popup-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.details-pic {
+    width: calc(10vmin + 5px);
+    height: calc(10vmin + 5px);
+    border-radius: 40px;
+}
+
+.popup-details {
+    padding: 5% 10% 0 10%;
+}
+
+.details-info-pic {
+    width: calc(2vmin + 5px);
+    height: calc(2vmin + 5px);
+    padding: 3% 3% 0 0;
+}
+
+.details-info {
+    display: flex;
+}
+
+.details-info p{
+    padding: 1% 0 0 0;
+}

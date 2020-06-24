@@ -1,0 +1,20 @@
+.group-chat {
+    margin: 20% 25%;
+    display: flex;
+}
+
+.group-chat-button {
+    text-decoration: none;
+    padding: 2% 5%;
+    margin: 0 3%;
+    border-radius: 25px;
+    border: none;
+    background-color: #760E26;
+    color: white;
+    height: 15px;
+    width: 70px;
+}
+
+.group-chat-button:hover {
+    background-color: #540a1b;
+}
