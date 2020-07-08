@@ -26,3 +26,10 @@
 .switch-button:hover {
   background-color: #efefef;
 }
+
+.department {
+    padding: 2%;
+    width: 80%;
+    margin: 5%;
+    font-size: 18px;
+}

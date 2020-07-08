@@ -178,6 +178,7 @@ class RegisterPage extends React.Component {
     renderFieldDependingOnRegisterRole = () => {
         if (this.state.isCoordinator) {
             return <div>
+                <label className="department">Department</label>
                 <select className="department-select" onChange={e => this.setDepartment(e.target.value)}>
                     <option value=""></option>
                     {this.state.departments.map((item, i) => {
